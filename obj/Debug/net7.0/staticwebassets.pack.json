@@ -9,8 +9,200 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\images\\Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\QR.png",
+      "PackagePath": "staticwebassets\\images\\QR.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\dining-menu.png",
+      "PackagePath": "staticwebassets\\images\\dining-menu.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\dominos_background.jpg",
+      "PackagePath": "staticwebassets\\images\\dominos_background.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\angle-left-svgrepo-com.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\angle-left-svgrepo-com.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\arrow-down.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\arrow-down.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\arrow-up.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\arrow-up.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\border-all.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\border-all.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\cash-coin.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\cash-coin.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\chevron-left.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\chevron-left.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\chevron-right.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\chevron-right.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\clipboard-check.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\clipboard-check.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\cloud-arrow-up.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\cloud-arrow-up.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\customer.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\customer.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\delete-trash-icon.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\delete-trash-icon.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\dinner-table.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\dinner-table.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\edit-pen.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\edit-pen.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\eye-close.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\eye-close.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\grid-3x2.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\grid-3x2.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\hamburger.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\hamburger.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\list-check.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\list-check.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\menu-icon.png",
+      "PackagePath": "staticwebassets\\images\\icons\\menu-icon.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\non-veg-icon.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\non-veg-icon.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\order-value.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\order-value.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\people.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\people.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\person-gear.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\person-gear.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\person-rolodex.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\person-rolodex.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\plus-square.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\plus-square.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\search.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\search.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\square-fill.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\square-fill.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\total-orders.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\total-orders.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\total-sales.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\total-sales.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\ui-checks-grid.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\ui-checks-grid.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\veg-icon.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\veg-icon.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\vegan-icon.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\vegan-icon.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\waiting-list.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\waiting-list.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\waiting-time.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\waiting-time.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\warning-icon.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\warning-icon.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\logos\\icons8-facebook-48.png",
+      "PackagePath": "staticwebassets\\images\\logos\\icons8-facebook-48.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\logos\\icons8-github-48.png",
+      "PackagePath": "staticwebassets\\images\\logos\\icons8-github-48.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\logos\\icons8-google-48.png",
+      "PackagePath": "staticwebassets\\images\\logos\\icons8-google-48.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\logos\\pizzashop_logo.png",
+      "PackagePath": "staticwebassets\\images\\logos\\pizzashop_logo.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\profile_div_bg.jpg",
+      "PackagePath": "staticwebassets\\images\\profile_div_bg.jpg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\qr-code.png",
+      "PackagePath": "staticwebassets\\images\\qr-code.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\toppng.com-warning-icon-2400x2400.png",
+      "PackagePath": "staticwebassets\\images\\toppng.com-warning-icon-2400x2400.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\transperent-pizza.png",
+      "PackagePath": "staticwebassets\\images\\transperent-pizza.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\js\\custom.js",
+      "PackagePath": "staticwebassets\\js\\custom.js"
     },
     {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\js\\site.js",

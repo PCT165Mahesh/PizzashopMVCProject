@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PizzashopMVCProject.Models;
 
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var conn = builder.Configuration.GetConnectionString("PizzashopDB");
 builder.Services.AddDbContext<PizzashopDbContext>(q => q.UseNpgsql(conn));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -29,6 +31,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Login}/{id?}");
 
 app.Run();

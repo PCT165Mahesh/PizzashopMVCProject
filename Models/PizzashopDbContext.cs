@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace PizzashopMVCProject.Models;
@@ -83,6 +84,7 @@ public partial class PizzashopDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
         modelBuilder.Entity<Booktable>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("booktable_pkey");
