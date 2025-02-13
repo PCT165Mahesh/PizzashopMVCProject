@@ -12,10 +12,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly PizzashopDbContext _context;
-    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context)
+
+    private IHttpContextAccessor _httpContextAccessor;
+    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _context = context;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public IActionResult Login()
