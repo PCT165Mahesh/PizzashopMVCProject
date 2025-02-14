@@ -1,13 +1,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PizzashopMVCProject.Models;
+using PizzashopMVCProject.Utilty;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 var conn = builder.Configuration.GetConnectionString("PizzashopDB");
 builder.Services.AddDbContext<PizzashopDbContext>(q => q.UseNpgsql(conn));
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 
 

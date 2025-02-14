@@ -51,3 +51,11 @@ D:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.Extensions.Identity.C
 D:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 D:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
 D:\Projects\PizzashopMVCProject\obj\Debug\net7.0\PizzashopMVCProject.MvcApplicationPartsAssemblyInfo.cs
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\MailKit.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\MimeKit.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\System.Formats.Asn1.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll

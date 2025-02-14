@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PizzashopMVCProject.Models;
+using PizzashopMVCProject.Utilty;
 using PizzashopMVCProject.ViewModels;
 
 namespace PizzashopMVCProject.Controllers;
@@ -12,11 +14,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly PizzashopDbContext _context;
+    private readonly IEmailSender _emailSender;
 
-    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context)
+    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context, IEmailSender emailSender)
     {
         _logger = logger;
         _context = context;
+        _emailSender = emailSender;
     }
 
     [HttpGet]
@@ -83,6 +87,18 @@ public class HomeController : Controller
         }
         ViewBag.UserEmail = email;
         return View();
+    }
+
+    // Forgot Password HTTPGET
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPassViewModel model){
+        
+        if(!string.IsNullOrEmpty(model.Email)){
+            await _emailSender.SendEmailAsync(model.Email, "Password Reset Link", "<h3>Click here to reset the password</h3>");
+            return RedirectToAction("Successful");
+        }
+        
+        return View(model);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
