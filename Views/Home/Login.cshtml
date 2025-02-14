@@ -91,6 +91,7 @@
                 <div class="mb-3 form-check">
                   <input
                     type="checkbox"
+                    asp-for="@Model.RememberMe"
                     class="form-check-input"
                     id="exampleCheck1"
                   />
@@ -99,9 +100,8 @@
                   >
                 </div>
                 <!-- Forgot Password Link -->
-                <a href="forgot_password.html" class="text-decoration-none"
-                  >Forgot Password?</a
-                >
+                <a asp-action="ForgotPassword" asp-controller="Home" asp-route-email="@Model.Email" class="text-decoration-none"
+                  >Forgot Password?</a>
                 @* Validation Summary For A Incorrect Credentials *@
                 @Html.ValidationSummary(true)
               </div>

@@ -10,17 +10,6 @@ var conn = builder.Configuration.GetConnectionString("PizzashopDB");
 builder.Services.AddDbContext<PizzashopDbContext>(q => q.UseNpgsql(conn));
 
 
-// For Cookies or Session
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-        options.SlidingExpiration = true;
-        options.AccessDeniedPath = "/Forbidden/";
-    });
-
-builder.Services.AddHttpContextAccessor();
-
 
 
 // Add services to the container.
@@ -45,7 +34,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Login}/{id?}");
