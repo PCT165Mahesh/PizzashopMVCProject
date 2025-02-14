@@ -51,7 +51,7 @@
                   type="email"
                   asp-for="@Model.Email"
                   class="form-control p-2"
-                  id="email"
+                  id="LoginEmail"
                   aria-describedby="emailHelp"
                   placeholder="Email*"
                   
@@ -100,7 +100,7 @@
                   >
                 </div>
                 <!-- Forgot Password Link -->
-                <a asp-action="ForgotPassword" asp-controller="Home" asp-route-email="@Model.Email" class="text-decoration-none"
+                <a asp-action="ForgotPassword" asp-controller="Home" asp-route-email="@Model?.Email" id="forgotPasswordLink" class="text-decoration-none"
                   >Forgot Password?</a>
                 @* Validation Summary For A Incorrect Credentials *@
                 @Html.ValidationSummary(true)
@@ -116,3 +116,12 @@
       </div>
     </div>
 
+@section Scripts
+{
+    <script>
+        document.getElementById('forgotPasswordLink').addEventListener('click', function() {
+            var email = document.getElementById("LoginEmail").value;
+            this.href = '@Url.Action("ForgotPassword", "Home")' + '?Email=' + encodeURIComponent(email);
+        });
+    </script>
+}

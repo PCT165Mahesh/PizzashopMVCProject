@@ -38,14 +38,14 @@ public class HomeController : Controller
         options.Expires = DateTime.Now.AddDays(30);
 
         if(ModelState.IsValid){
-            var users = _context.Users
+            var users = await _context.Users
                     .Where(p => p.Email == model.Email)
                     .Select(x => new
                     {
                         x.Email,
                         x.Password,
                     })
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
             if(users != null && users.Password == model.Password){
 
@@ -69,15 +69,19 @@ public class HomeController : Controller
         return View();
     }
 
+    // HttpGet Logout Action
     public IActionResult Logout(){
         Response.Cookies.Delete("userMail");
         return RedirectToAction("Login");
     }
 
     // Forgot Password HTTPGET
-    public IActionResult ForgotPassword(LoginViewModel model){
-
-        Console.WriteLine(model.Email);
+    public IActionResult ForgotPassword(string email){
+        
+        if(string.IsNullOrEmpty(email)){
+            ViewBag.UserEmail = "";
+        }
+        ViewBag.UserEmail = email;
         return View();
     }
 
