@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AtNz1cpWOlnWL9Gqd+qdklzyM0NQG7GDgCBXK8I+5DlHO7XroIPTE+Se+k32ReGDF2McWrn+32P+cB6+GW6tlg==",
+  "dgSpecHash": "rNvPWlUytxdEA+GTSRxtx9FJGfMdUujBEsYS2NgOd9/dNfOkpWRnkcMsNadKXaxvHBbwXlFndusuDncHuME9HA==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\PizzashopMVCProject\\PizzashopMVCProject.csproj",
+  "projectFilePath": "d:\\Projects\\PizzashopMVCProject\\PizzashopMVCProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pct165\\.nuget\\packages\\bouncycastle.cryptography\\2.5.0\\bouncycastle.cryptography.2.5.0.nupkg.sha512",
     "C:\\Users\\pct165\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

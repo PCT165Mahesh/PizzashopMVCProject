@@ -12,5 +12,5 @@ public class ResetPassViewModel
     [DataType(DataType.Password)]
     public string ConfirmPassword { get; set; }
 
-    public string Email { get; set; }
+    public string? Email { get; set; }
 }

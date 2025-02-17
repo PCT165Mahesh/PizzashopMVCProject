@@ -75,7 +75,7 @@ public class HomeController : Controller
                     })
                     .FirstOrDefaultAsync();
 
-            if(users != null && users.Password == model.Password){
+            if(users != null && users.Password == EncryptPassword(model.Password)){
 
                 // Remember Me :- Using Cookie
                 if(model.RememberMe == true){
@@ -170,7 +170,7 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult ResetPassword(string email){
         // Console.WriteLine(email);
-        ViewBag.Email = email;
+        ViewData["Email"] = email;
         return View();
     }
 
@@ -182,6 +182,10 @@ public class HomeController : Controller
                 var user = await _context.Users.Where(u=>u.Email == email).FirstOrDefaultAsync();
                 if(user != null){
                     user.Password = EncryptPassword(model.Password);
+                    user.UpdatedAt = DateTime.Now;
+                    user.UpdatedBy = user.Id;
+                    _context.Users.Update(user);
+                    // await _context.Users.Update(user);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Login");
                 }
