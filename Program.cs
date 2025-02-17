@@ -12,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 var conn = builder.Configuration.GetConnectionString("PizzashopDB");
 builder.Services.AddDbContext<PizzashopDbContext>(q => q.UseNpgsql(conn));
 
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
 

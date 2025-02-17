@@ -1,39 +1,37 @@
-using System.Net;
-using System.Net.Mail;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using System;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using PizzashopMVCProject.Utilty;
 using MimeKit;
-
-namespace PizzashopMVCProject.Utilty;
+using MailKit.Net.Smtp;
 
 public class EmailSender : IEmailSender
 {
-    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+    private readonly EmailSettings _emailSettings;
+
+    public EmailSender(IOptions<EmailSettings> emailSettings)
     {
-        // var emailToSend = new MimeMessage();
-        // emailToSend.From.Add(MailboxAddress.Parse("maheshnanera3204@gmail.com"));
-        // emailToSend.To.Add(MailboxAddress.Parse(email));
-        // emailToSend.Subject = subject;
-        // emailToSend.Body = new TextPart(MimeKit.Text.TextFormat.Html){ Text = htmlMessage};
-
-        // //send Email
-        // using(var emailClient = new SmtpClient()){
-
-        // }
-
-        var message = new MailMessage();
-        message.To.Add(email);
-        message.Subject = subject;
-        message.Body = htmlMessage;
-        message.IsBodyHtml = true;
-        message.From = new MailAddress("maheshnanera1619@gmail.com");
-
-        using var smtp = new SmtpClient("mail.etatvasoft.com", 587);
-        // smtp.EnableSsl = _options.EnableSsl;
-        smtp.Credentials = new NetworkCredential("test.dotnet@etatvasoft.com", "P}N^{z-]7Ilp");
-
-        await smtp.SendMailAsync(message);
-        // return Task.CompletedTask;
+        _emailSettings = emailSettings.Value;
     }
 
+    public async Task SendEmailAsync(string email, string subject, string message)
+    {
+        var emailTosend = new MimeMessage();
+        emailTosend.From.Add(new MailboxAddress(_emailSettings.FromEmail, _emailSettings.FromEmail));
+        emailTosend.To.Add(new MailboxAddress(email, email));
+        emailTosend.Subject = subject;
+        emailTosend.Body = new TextPart("html"){Text = message};
+
+        using var smtp = new SmtpClient();
+        try{
+            await smtp.ConnectAsync(_emailSettings.SmtpServer, _emailSettings.Port, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(_emailSettings.Username, _emailSettings.Password);
+            await smtp.SendAsync(emailTosend);
+            await smtp.DisconnectAsync(true);
+        }
+        catch(Exception ex){
+            Console.WriteLine($"Email Sending Fialed : ${ex.Message}");
+        }
+    }
 }
