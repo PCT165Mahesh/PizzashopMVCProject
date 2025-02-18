@@ -59,3 +59,11 @@ d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\System.Security.Cryptography.Pk
 d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
 d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
 d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+d:\Projects\PizzashopMVCProject\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

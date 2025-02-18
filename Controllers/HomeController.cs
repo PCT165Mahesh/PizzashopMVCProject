@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzashopMVCProject.Models;
 using PizzashopMVCProject.ViewModels;
+using PizzashopMVCProject.Utilty;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PizzashopMVCProject.Controllers;
 
@@ -14,12 +16,14 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly PizzashopDbContext _context;
     private readonly IEmailSender _emailSender;
+    private readonly JwtService _jwtService;
 
-    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context, IEmailSender emailSender)
+    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context, IEmailSender emailSender,JwtService jwtService)
     {
         _logger = logger;
         _context = context;
         _emailSender = emailSender;
+        _jwtService = jwtService;
     }
 
 
@@ -50,7 +54,8 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Login()
     {
-        if(Request.Cookies["userMail"] != null){
+
+        if(Request.Cookies["UserEmail"] != null){
             return RedirectToAction("Successful");
         }
         
@@ -63,23 +68,40 @@ public class HomeController : Controller
         // var users = await _context.Users.FirstOrDefaultAsync(q => q.Email == model.Email);
 
         CookieOptions options = new CookieOptions();
-        options.Expires = DateTime.Now.AddDays(30);
+        options.Expires = DateTime.Now.AddHours(10);
 
         if(ModelState.IsValid){
             var users = await _context.Users
                     .Where(p => p.Email == model.Email)
+                    
                     .Select(x => new
                     {
+                        x.Roleid,
                         x.Email,
                         x.Password,
                     })
                     .FirstOrDefaultAsync();
 
+            
+
+            var roleObj = await _context.Roles.Where(p=>p.RoleId == users.Roleid).FirstOrDefaultAsync();
+
             if(users != null && users.Password == EncryptPassword(model.Password)){
+
+                // JWT Token Generation
+                string token = _jwtService.GenerateJwtToken(users.Email, roleObj.Rolename);
+
+                // Store the JWT Token into Cookies
+                Response.Cookies.Append("SuperSecretAuthToken", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    Expires = DateTime.UtcNow.AddHours(10)
+                });
 
                 // Remember Me :- Using Cookie
                 if(model.RememberMe == true){
-                    Response.Cookies.Append("userMail", model.Email, options);
+                    Response.Cookies.Append("UserEmail", model.Email, options);
                 }
                 return RedirectToAction("Successful");
             }
@@ -92,14 +114,17 @@ public class HomeController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "SuperAdmin")]
     public IActionResult Successful()
     {
         return View();
     }
 
     // HttpGet Logout Action
+    // [Authorize(Roles = "Super Admin")]
     public IActionResult Logout(){
-        Response.Cookies.Delete("userMail");
+        Response.Cookies.Delete("UserEmail");
+        Response.Cookies.Delete("SuperSecretAuthToken");
         return RedirectToAction("Login");
     }
 
@@ -150,10 +175,12 @@ public class HomeController : Controller
                     .Where(p => p.Email == model.Email)
                     .Select(x => new
                     {
+                        x.Roleid,
                         x.Email,
                         x.Password,
                     })
                     .FirstOrDefaultAsync();
+        
         
         if(ModelState.IsValid){
             if(user != null){

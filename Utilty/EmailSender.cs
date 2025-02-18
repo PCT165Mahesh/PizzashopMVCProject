@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using PizzashopMVCProject.Utilty;
 using MimeKit;
-using MailKit.Net.Smtp;
+using MailKit.Net.Smtp; 
 
 public class EmailSender : IEmailSender
 {
