@@ -39,17 +39,6 @@ public class HomeController : Controller
         }
     }
 
-    // Passsword Decryption
-    public static string DecryptPassword(string password){
-        if(string.IsNullOrEmpty(password)){
-            return null;
-        }
-        else{
-            byte[] encryptedPassword = Convert.FromBase64String(password);
-            string decyptedPassword = ASCIIEncoding.ASCII.GetString(encryptedPassword);
-            return decyptedPassword;
-        }
-    }
 
     [HttpGet]
     public IActionResult Login()
@@ -114,14 +103,14 @@ public class HomeController : Controller
         return View(model);
     }
 
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Super Admin")]
     public IActionResult Successful()
     {
         return View();
     }
 
     // HttpGet Logout Action
-    // [Authorize(Roles = "Super Admin")]
+    [Authorize(Roles = "Super Admin")]
     public IActionResult Logout(){
         Response.Cookies.Delete("UserEmail");
         Response.Cookies.Delete("SuperSecretAuthToken");
