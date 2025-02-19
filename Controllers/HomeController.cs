@@ -8,6 +8,8 @@ using PizzashopMVCProject.Models;
 using PizzashopMVCProject.ViewModels;
 using PizzashopMVCProject.Utilty;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace PizzashopMVCProject.Controllers;
 
@@ -27,16 +29,17 @@ public class HomeController : Controller
     }
 
 
-     // Passsword Encryption
-    public static string EncryptPassword(string password){
-        if(string.IsNullOrEmpty(password)){
-            return null;
-        }
-        else{
-            byte[] storedPassword = ASCIIEncoding.ASCII.GetBytes(password);
-            string encryptedPassword = Convert.ToBase64String(storedPassword);
-            return encryptedPassword;
-        }
+    //  Passsword Encryption
+
+
+     public static string EncryptPassword(string password){
+       string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+           password: password,
+           salt: new byte[0],
+           prf: KeyDerivationPrf.HMACSHA1,
+           iterationCount: 10000,
+           numBytesRequested: 256 / 8));
+        return hashed;
     }
 
 
@@ -45,7 +48,7 @@ public class HomeController : Controller
     {
 
         if(Request.Cookies["UserEmail"] != null){
-            return RedirectToAction("Successful");
+            return RedirectToAction("Index", "Dashboard");
         }
         
         return View();
@@ -92,7 +95,7 @@ public class HomeController : Controller
                 if(model.RememberMe == true){
                     Response.Cookies.Append("UserEmail", model.Email, options);
                 }
-                return RedirectToAction("Successful");
+                return RedirectToAction("Index", "Dashboard");
             }
             else{
                 ModelState.AddModelError("password", "Incorrect Credentials");

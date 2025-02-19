@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "DKXVliQXaB+UQhUBkHd3FFccbik2sLGaT46eu4HYp4s=",
+  "Hash": "5gVPcgoGYDi6poEgdh/e1hMm+gvvL0/xDjG0cBNVoOM=",
   "Source": "PizzashopMVCProject",
   "BasePath": "_content/PizzashopMVCProject",
   "Mode": "Default",
@@ -1241,6 +1241,23 @@
       "OriginalItemSpec": "wwwroot\\images\\icons\\border-all.svg"
     },
     {
+      "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\camera.svg",
+      "SourceId": "PizzashopMVCProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\",
+      "BasePath": "_content/PizzashopMVCProject",
+      "RelativePath": "images/icons/camera.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\icons\\camera.svg"
+    },
+    {
       "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\cash-coin.svg",
       "SourceId": "PizzashopMVCProject",
       "SourceType": "Discovered",
@@ -1462,6 +1479,23 @@
       "OriginalItemSpec": "wwwroot\\images\\icons\\list-check.svg"
     },
     {
+      "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\logout-svgrepo-com.svg",
+      "SourceId": "PizzashopMVCProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\",
+      "BasePath": "_content/PizzashopMVCProject",
+      "RelativePath": "images/icons/logout-svgrepo-com.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\icons\\logout-svgrepo-com.svg"
+    },
+    {
       "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\menu-icon.png",
       "SourceId": "PizzashopMVCProject",
       "SourceType": "Discovered",
@@ -1530,6 +1564,23 @@
       "OriginalItemSpec": "wwwroot\\images\\icons\\people.svg"
     },
     {
+      "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\person-circle.svg",
+      "SourceId": "PizzashopMVCProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\",
+      "BasePath": "_content/PizzashopMVCProject",
+      "RelativePath": "images/icons/person-circle.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\icons\\person-circle.svg"
+    },
+    {
       "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\person-gear.svg",
       "SourceId": "PizzashopMVCProject",
       "SourceType": "Discovered",
@@ -1579,6 +1630,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\icons\\plus-square.svg"
+    },
+    {
+      "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\reset-svgrepo-com.svg",
+      "SourceId": "PizzashopMVCProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\",
+      "BasePath": "_content/PizzashopMVCProject",
+      "RelativePath": "images/icons/reset-svgrepo-com.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\icons\\reset-svgrepo-com.svg"
     },
     {
       "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\search.svg",

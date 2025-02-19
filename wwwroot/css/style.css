@@ -322,6 +322,25 @@ input[type="file"] {
   color: #0066a7;
 }
 
+
+
+/* Profile Data CSS part */
+#profileImageContainer{
+  top: -20px;
+  left: 23px;
+}
+
+#cameraImageContainer{
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  padding: 5px;
+  top: 56px;
+  left: -4px;
+}
+
+
+
 /* Media Query */
 
 @media (max-width: 767px) {

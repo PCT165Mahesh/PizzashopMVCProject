@@ -49,6 +49,10 @@
       "PackagePath": "staticwebassets\\images\\icons\\border-all.svg"
     },
     {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\camera.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\camera.svg"
+    },
+    {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\cash-coin.svg",
       "PackagePath": "staticwebassets\\images\\icons\\cash-coin.svg"
     },
@@ -101,6 +105,10 @@
       "PackagePath": "staticwebassets\\images\\icons\\list-check.svg"
     },
     {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\logout-svgrepo-com.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\logout-svgrepo-com.svg"
+    },
+    {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\menu-icon.png",
       "PackagePath": "staticwebassets\\images\\icons\\menu-icon.png"
     },
@@ -117,6 +125,10 @@
       "PackagePath": "staticwebassets\\images\\icons\\people.svg"
     },
     {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\person-circle.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\person-circle.svg"
+    },
+    {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\person-gear.svg",
       "PackagePath": "staticwebassets\\images\\icons\\person-gear.svg"
     },
@@ -127,6 +139,10 @@
     {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\plus-square.svg",
       "PackagePath": "staticwebassets\\images\\icons\\plus-square.svg"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\reset-svgrepo-com.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\reset-svgrepo-com.svg"
     },
     {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\search.svg",

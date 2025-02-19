@@ -1,52 +1,204 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PizzashopMVCProject</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PizzashopMVCProject.styles.css" asp-append-version="true" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PizzashopMVCProject</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <!-- Navbar Upper Starts -->
+    <nav class="navbar navbar-expand-lg upper_navbar p-0">
+        <div class="container-fluid p-0">
+            <div class="bg-white d-flex flex-row">
+                <!-- Hamburger -->
+                <button class="btn d-block d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                    aria-controls="offcanvasExample">
+                    <img src="~/images/icons/hamburger.svg" alt="" width="30px" />
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+
+                <!-- Pizzashop Logo -->
+                <a href="" class="d-flex align-items-center text-decoration-none ms-3">
+                    <img src="~/images/logos/pizzashop_logo.png" alt="" width="70px" style="margin-right: 13px" />
+                    <span class="sidebar_desc d-none d-md-block fw-bold" style="padding-right: 60px">PIZZASHOP</span>
+                </a>
+            </div>
+            <!-- User Profile Image -->
+            <div class="dropdown">
+                <img src="~/images/Default_pfp.svg.png" alt="" width="50px" class="me-3" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li class="border-bottom"><a class="dropdown-item" href="#">
+                            <img src="~/images/Default_pfp.svg.png" alt="" width="40px">
+                            <span class="ms-2">@ViewData["UserName"]</span>
+                        </a></li>
+                    <li class="mt-2"><a class="dropdown-item" asp-action="ProfileDetails" asp-controller="Dashboard">
+                            <img src="~/images/icons/person-circle.svg" alt="" width="20px">
+                            <span class="ms-3">My Profile</span>
+                        </a></li>
+                    <li><a class="dropdown-item" href="#">
+                            <img src="~/images/icons/reset-svgrepo-com.svg" alt="" width="20px">
+                            <span class="ms-3">Change Password</span>
+                        </a></li>
+                    <li><a class="dropdown-item" asp-action="Logout" asp-controller="Home">
+                            <img src="~/images/icons/logout-svgrepo-com.svg" alt="" width="20px">
+                            <span class="ms-3">Logout</span>
+                        </a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <!-- Navbar Upper Ends -->
+
+    <div class="main_body d-flex">
+        <!-- Left Navigation Panel Starts-->
+        <nav class="d-none d-lg-block sidebar d-flex flex-column align-items-center">
+            <ul>
+                <li>
+                    <a href="./user_list.html">
+                        <img src="~/images/icons/border-all.svg" alt="" />
+                        <span class="sidebar_desc">Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="./user_list.html">
+                        <img src="~/images/icons/people.svg" alt="" />
+                        <span class="sidebar_desc">Users</span>
+                    </a>
+                </li>
+                @if (User.IsInRole("Super Admin"))
+                {
+                    <li>
+                        <a href="./permissions.html">
+                            <img src="~/images/icons/person-gear.svg" alt="" />
+                            <span class="sidebar_desc">Roles and Permisions</span>
+                        </a>
+                    </li>
+                }
+
+                <li>
+                    <a href="./menu.html">
+                        <img src="~/images/icons/menu-icon.png" alt="" />
+                        <span class="sidebar_desc">Menu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="~/images/icons/square-fill.svg" alt="" />
+                        <span class="sidebar_desc">Table and Section</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="~/images/icons/cash-coin.svg" alt="" />
+                        <span class="sidebar_desc">Taxes and Fees</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="~/images/icons/clipboard-check.svg" alt="" />
+                        <span class="sidebar_desc">Order</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="~/images/icons/person-rolodex.svg" alt="" />
+                        <span class="sidebar_desc">Customers</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Left Navigation Panel Ends -->
+
+        <!-- OffCanvas SideBar Starts -->
+        <div class="offcanvas offcanvas-start w-auto" tabindex="-1" id="offcanvasExample"
+            aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-body">
+                <nav class="sidebar d-flex flex-column">
+                    <div class="offcanvas-header p-0">
+                        <a href="" class="d-flex align-items-center text-decoration-none ms-3">
+                            <img src="~/images/logos/pizzashop_logo.png" alt="" />
+                            <span class="sidebar_desc fw-bold">PIZZASHOP</span>
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a href="./user_list.html">
+                                <img src="~/images/icons/border-all.svg" alt="" />
+                                <span class="sidebar_desc">Dashboard</span>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="active">
+                            <a href="./user_list.html">
+                                <img src="~/images/icons/people.svg" alt="" />
+                                <span class="sidebar_desc">Users</span>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                        <li>
+                            <a href="./permissions.html">
+                                <img src="~/images/icons/person-gear.svg" alt="" />
+                                <span class="sidebar_desc">Roles and Permisions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="~/images/icons/customer.svg" alt="" />
+                                <span class="sidebar_desc">Menu</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="~/images/icons/square-fill.svg" alt="" />
+                                <span class="sidebar_desc">Table and Section</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="~/images/icons/cash-coin.svg" alt="" />
+                                <span class="sidebar_desc">Taxes and Fees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="~/images/icons/clipboard-check.svg" alt="" />
+                                <span class="sidebar_desc">Order</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="~/images/icons/person-rolodex.svg" alt="" />
+                                <span class="sidebar_desc">Customers</span>
+                            </a>
                         </li>
                     </ul>
-                </div>
+                </nav>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
+        <!-- Offcanvas Sidebar Ends -->
+
+
+        @RenderBody()
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - PizzashopMVCProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/js/custom.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

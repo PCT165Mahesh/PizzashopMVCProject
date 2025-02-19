@@ -18,25 +18,43 @@ public class JwtService
     }
 
     public string GenerateJwtToken(string email, string role)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_key); // Secret Code (Salt)
+
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_key); // Secret Code (Salt)
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            Subject = new ClaimsIdentity(new[]
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Email, email),
-                    new Claim(ClaimTypes.Role, role),
-                    //new Claim("ClaimName", "Dynamic Value for Claim") Custom Claim
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                Issuer = _issuer,
-                Audience = _audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-            };
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role),
+                //new Claim("ClaimName", "Dynamic Value for Claim") Custom Claim
+            }),
+            Expires = DateTime.UtcNow.AddHours(1),
+            Issuer = _issuer,
+            Audience = _audience,
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+        };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+
+    // Extracts claims from a JWT token.
+    public ClaimsPrincipal? GetClaimsFromToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        var claims = new ClaimsIdentity(jwtToken.Claims);
+        return new ClaimsPrincipal(claims);
+    }
+
+    // Retrieves a specific claim value from a JWT token.
+    public string? GetClaimValue(string token, string claimType)
+    {
+        var claimsPrincipal = GetClaimsFromToken(token);
+        // return claimsPrincipal?.FindFirst(claimType)?.Value;
+        var value = claimsPrincipal?.FindFirst(claimType)?.Value;
+        return value;
+    }
 }
