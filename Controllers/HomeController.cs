@@ -19,28 +19,21 @@ public class HomeController : Controller
     private readonly PizzashopDbContext _context;
     private readonly IEmailSender _emailSender;
     private readonly JwtService _jwtService;
+    private readonly EncryptionService _encrypt;
 
-    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context, IEmailSender emailSender,JwtService jwtService)
+    public HomeController(ILogger<HomeController> logger, PizzashopDbContext context, IEmailSender emailSender,JwtService jwtService
+                        ,EncryptionService encrypt)
     {
         _logger = logger;
         _context = context;
         _emailSender = emailSender;
         _jwtService = jwtService;
+        _encrypt = encrypt;
     }
 
 
     //  Passsword Encryption
 
-
-     public static string EncryptPassword(string password){
-       string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-           password: password,
-           salt: new byte[0],
-           prf: KeyDerivationPrf.HMACSHA1,
-           iterationCount: 10000,
-           numBytesRequested: 256 / 8));
-        return hashed;
-    }
 
 
     [HttpGet]
@@ -78,7 +71,7 @@ public class HomeController : Controller
 
             var roleObj = await _context.Roles.Where(p=>p.RoleId == users.Roleid).FirstOrDefaultAsync();
 
-            if(users != null && users.Password == EncryptPassword(model.Password)){
+            if(users != null && users.Password == _encrypt.EncryptPassword(model.Password) ){
 
                 // JWT Token Generation
                 string token = _jwtService.GenerateJwtToken(users.Email, roleObj.Rolename);
@@ -200,7 +193,7 @@ public class HomeController : Controller
             if(model.Password == model.ConfirmPassword){
                 var user = await _context.Users.Where(u=>u.Email == email).FirstOrDefaultAsync();
                 if(user != null){
-                    user.Password = EncryptPassword(model.Password);
+                    user.Password = _encrypt.EncryptPassword(model.Password);
                     user.UpdatedAt = DateTime.Now;
                     user.UpdatedBy = user.Id;
                     _context.Users.Update(user);

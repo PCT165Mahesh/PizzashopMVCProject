@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\Projects\PizzashopMVCProject
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/Projects/PizzashopMVCProject/Views/Dashboard/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXENoYW5nZVBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Projects/PizzashopMVCProject/Views/Dashboard/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXGluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

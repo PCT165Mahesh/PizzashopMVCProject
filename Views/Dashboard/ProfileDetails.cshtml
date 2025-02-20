@@ -24,7 +24,7 @@
         </div>
         <div class="d-flex">
             <div class="rounded-circle position-relative bg-white" id="profileImageContainer">
-                <img src="~/images/Default_pfp.svg.png" alt="" class="" height="120px">
+                <img src="~/uploads/@(Model.Imgurl != null ? Model.Imgurl : "Default_pfp.svg.png")" alt="" class="rounded-circle border border-dark object-fit-cover" width="120px" height="120px">
             </div>
             <div class="rounded-circle position-relative bg-white" id="cameraImageContainer">
                 <img src="~/images/icons/camera.svg" alt="" class="" height="30px">
@@ -60,29 +60,32 @@
                 </div>
 
                 <div class="form-floating col-md-12 col-lg-4 mb-3">
-                    <select class="form-select" aria-label="Default select example" id="country">
-                        <option selected>Select Country</option>
-                        <option value="Account">India</option>
-                        <option value="Admin">USA</option>
-                        <option value="Cheff">Australia</option>
+                    <select asp-for="CountryId" class="form-select" id="country">
+                        <option value="">Select Country</option>
+                        @foreach (var country in Model.Countries)
+                        {
+                            <option value="@country.CountryId">@country.Name</option>
+                        }
                     </select>
                     <label for="country">Country</label>
                 </div>
                 <div class="form-floating col-md-12 col-lg-4 mb-3">
-                    <select class="form-select" aria-label="Default select example" id="state">
-                        <option selected>Select State</option>
-                        <option value="Account">Gujarat</option>
-                        <option value="Admin">Rajasthan</option>
-                        <option value="Cheff">UP</option>
+                    <select asp-for="StateId" class="form-select" id="state">
+                        <option value="">Select State</option>
+                        @foreach (var state in Model.States)
+                        {
+                            <option value="@state.StateId">@state.Name</option>
+                        }
                     </select>
                     <label for="state">State</label>
                 </div>
                 <div class="form-floating col-md-12 col-lg-4 mb-3">
-                    <select class="form-select" aria-label="Default select example" id="city">
-                        <option selected>Select City</option>
-                        <option value="Account">Dwarka</option>
-                        <option value="Admin">Ahmedabad</option>
-                        <option value="Cheff">Jamnagar</option>
+                    <select asp-for="CityId" class="form-select" id="city">
+                        <option value="">Select City</option>
+                        @foreach (var city in Model.Cities)
+                        {
+                            <option value="@city.CityId">@city.Name</option>
+                        }
                     </select>
                     <label for="city">City</label>
                 </div>
@@ -108,6 +111,7 @@
 
 @section Scripts
 {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // Open file explorer while clicking option camera img
         const uploadImage = document.getElementById("uploadImage");
@@ -116,5 +120,60 @@
             @* event.preventDefault(); *@
             uploadImage.click();
         })
+    </script>
+     <script>
+        $(document).ready(function () {
+            // When Country dropdown changes
+            $("#country").change(function () {
+                var countryId = $(this).val();
+                if (countryId) {
+                    $.ajax({
+                        url: '@Url.Action("GetStatesByCountry", "Dashboard")',
+                        type: "GET",
+                        data: { countryId: countryId },
+                        success: function (states) {
+                            console.log("Cities Received:", states); // Debugging Log
+                            $("#state").empty().append('<option value="">Select State</option>'); // Reset state dropdown
+                            $("#city").empty().append('<option value="">Select City</option>'); // Reset city dropdown
+                            $.each(states, function (index, state) {
+                                $("#state").append('<option value="' + state.stateId + '">' + state.name + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert("Error loading states");
+                        }
+                    });
+                } else {
+                    $("#state").empty().append('<option value="">Select State</option>');
+                    $("#city").empty().append('<option value="">Select City</option>');
+                }
+            });
+
+            // When State dropdown changes
+            $("#state").change(function () {
+                var stateId = $(this).val();
+                console.log("State ID Selected:", stateId); // Debugging Log
+
+                if (stateId) {
+                    $.ajax({
+                        url: '@Url.Action("GetCitiesByState", "Dashboard")' + '?id=' + stateId,
+                        @* url: '@Url.Action("GetCitiesByState", "Dashboard")',
+                        data:{id : stateId} *@
+                        type: "GET",
+                        success: function (cities) {
+                            console.log("Cities Received:", cities); // Debugging Log
+                            $("#city").empty().append('<option value="">Select City</option>');
+                            $.each(cities, function (index, city) {
+                                $("#city").append('<option value="' + city.id + '">' + city.name + '</option>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error loading cities:", error); // Debugging Log
+                            alert("Error loading cities");
+                        }
+                    });
+                }
+            });
+        });
     </script>
 }

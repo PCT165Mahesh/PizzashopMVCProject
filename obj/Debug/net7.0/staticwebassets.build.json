@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5gVPcgoGYDi6poEgdh/e1hMm+gvvL0/xDjG0cBNVoOM=",
+  "Hash": "BOn2wiyMULasU3tU0qUCTCyqmkRuU26bJZMc+fueneo=",
   "Source": "PizzashopMVCProject",
   "BasePath": "_content/PizzashopMVCProject",
   "Mode": "Default",
@@ -2973,6 +2973,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\Default_pfp.svg.png",
+      "SourceId": "PizzashopMVCProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\",
+      "BasePath": "_content/PizzashopMVCProject",
+      "RelativePath": "uploads/Default_pfp.svg.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\Default_pfp.svg.png"
+    },
+    {
+      "Identity": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\image.png",
+      "SourceId": "PizzashopMVCProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\",
+      "BasePath": "_content/PizzashopMVCProject",
+      "RelativePath": "uploads/image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\image.png"
     }
   ]
 }

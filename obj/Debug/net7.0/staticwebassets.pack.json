@@ -453,6 +453,14 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\Default_pfp.svg.png",
+      "PackagePath": "staticwebassets\\uploads\\Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\image.png",
+      "PackagePath": "staticwebassets\\uploads\\image.png"
+    },
+    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.PizzashopMVCProject.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

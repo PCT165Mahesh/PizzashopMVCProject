@@ -23,6 +23,7 @@ builder.Services.AddDbContext<PizzashopDbContext>(q => q.UseNpgsql(conn));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<EncryptionService>();
 
 
 
@@ -66,6 +67,13 @@ builder.Services.AddAuthentication(x=>{
                 {
                     context.Request.Headers["Authorization"] = "Bearer " + token;
                 }
+                return Task.CompletedTask;
+            },
+            OnChallenge = context =>
+            {
+                // Redirect to login page when unauthorized instead of returning 401
+                context.HandleResponse();
+                context.Response.Redirect("/Home/Login");
                 return Task.CompletedTask;
             }
         };

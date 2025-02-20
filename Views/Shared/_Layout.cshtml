@@ -29,7 +29,7 @@
             </div>
             <!-- User Profile Image -->
             <div class="dropdown">
-                <img src="~/images/Default_pfp.svg.png" alt="" width="50px" class="me-3" role="button"
+                <img src="~/uploads/Default_pfp.svg.png" alt="" class="rounded-circle me-3" height="50px" width="50px" class="me-3" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
 
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -41,11 +41,12 @@
                             <img src="~/images/icons/person-circle.svg" alt="" width="20px">
                             <span class="ms-3">My Profile</span>
                         </a></li>
-                    <li><a class="dropdown-item" href="#">
+                    <li><a class="dropdown-item" asp-action="ChangePassword" asp-controller="Dashboard">
                             <img src="~/images/icons/reset-svgrepo-com.svg" alt="" width="20px">
                             <span class="ms-3">Change Password</span>
                         </a></li>
-                    <li><a class="dropdown-item" asp-action="Logout" asp-controller="Home">
+                    <li><a type="button" class="dropdown-item" data-bs-toggle="modal"
+                    data-bs-target="#myModal">
                             <img src="~/images/icons/logout-svgrepo-com.svg" alt="" width="20px">
                             <span class="ms-3">Logout</span>
                         </a></li>
@@ -183,6 +184,45 @@
             </div>
         </div>
         <!-- Offcanvas Sidebar Ends -->
+
+
+        <!-- Delete user Modal -->
+        <div
+          class="modal fade"
+          tabindex="-1"
+          id="myModal"
+          aria-labelleby="modal-title"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              
+              <div class="modal-body d-flex flex-column align-items-center p-0">
+                <img
+                  src="~/images/icons/warning-icon.svg"
+                  alt=""
+                  width="35px"
+                  class="my-4 "
+                />
+                <p class="fs-5 fw-bold m-0">
+                  Are you sure you want to Logout?
+                </p>
+              </div>
+              <div
+                class="modal-footer border-0 d-flex flex-row justify-content-center"
+              >
+                @* <button type="submit" asp-action="Logout"asp-controller="Home" class="btn btn-primary" style="width: 70px;">Yes</button> *@
+                <a asp-action="Logout" asp-controller="Home" role="button" class="btn btn-primary" style="width: 70px;">Yes</a>
+                <button
+                  type="button"
+                  class="btn cancle_btn"
+                  data-bs-dismiss="modal"
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
         @RenderBody()
