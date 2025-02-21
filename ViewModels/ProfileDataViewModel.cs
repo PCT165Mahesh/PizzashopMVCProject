@@ -1,3 +1,4 @@
+
 using PizzashopMVCProject.Models;
 
 namespace PizzashopMVCProject.ViewModels;
@@ -12,7 +13,11 @@ public class ProfileDataViewModel
     public int zipcode { get; set; }
     public string address { get; set; }
 
+    public string Role { get; set; }
+
     public string Imgurl { get; set; } = null!;
+    public IFormFile? ProfileImage { get; set; } // For Uploading Image
+
 
     // New properties for country, state, and city selection
     public long CountryId { get; set; }

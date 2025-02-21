@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PizzashopMVCProject.Models;
 using PizzashopMVCProject.Utilty;
 using PizzashopMVCProject.ViewModels;
@@ -12,7 +11,7 @@ namespace PizzashopMVCProject.Controllers;
 public class DashboardController : Controller
 {
     private readonly PizzashopDbContext _context;
-    private readonly  JwtService _JwtService;
+    private readonly JwtService _JwtService;
     private readonly EncryptionService _encrypt;
 
 
@@ -25,34 +24,40 @@ public class DashboardController : Controller
 
     }
 
-    public IActionResult Index(){
+    public IActionResult Index()
+    {
         var token = Request.Cookies["SuperSecretAuthToken"];
         var email = _JwtService.GetClaimValue(token, "email");
         // var role = _JwtService.GetClaimValue(token, "role");
+        ViewData["ActiveLink"] = "Dashboard";
 
-        var user = _context.Users.Where(e => e.Email == email).FirstOrDefault();
+        var user = _context.Users.Where(e => e.Email == email).Select(x=> new {x.Username, x.Imgurl}).FirstOrDefault();
         DashboardViewModel model = new DashboardViewModel();
         ViewData["UserName"] = user.Username;
         ViewData["ImgUrl"] = user.Imgurl;
         return View(model);
     }
 
-
-     public IActionResult ProfileDetails(){
+    [HttpGet]
+    public IActionResult ProfileDetails()
+    {
         var token = Request.Cookies["SuperSecretAuthToken"];
         var email = _JwtService.GetClaimValue(token, "email");
         // var role = _JwtService.GetClaimValue(token, "role");
 
-        
+
         var user = _context.Users.Where(e => e.Email == email).FirstOrDefault();
+        var roleObj = _context.Roles.Where(u=>u.RoleId == user.Roleid).FirstOrDefault();
         ViewData["UserName"] = user.Username;
 
         ProfileDataViewModel model = new ProfileDataViewModel();
-        if(user != null){
+        if (user != null)
+        {
             model.email = user.Email;
             model.firstName = user.Firstname;
             model.lastName = user.Lastname;
             model.userName = user.Username;
+            model.Role = roleObj.Rolename;
             model.phoneNo = user.Phone;
             model.zipcode = user.Zipcode;
             model.address = user.Address;
@@ -68,29 +73,96 @@ public class DashboardController : Controller
     }
 
 
+    // Update User Profile Details
+    [HttpPost]
+    public async Task<IActionResult> ProfileDetails(ProfileDataViewModel model)
+    {
+        var token = Request.Cookies["SuperSecretAuthToken"];
+        var email = _JwtService.GetClaimValue(token, "email");
+
+        var user = _context.Users.FirstOrDefault(e => e.Email == email);
+        if (user != null)
+        {
+            // Update user details
+            user.Firstname = model.firstName;
+            user.Lastname = model.lastName;
+            user.Username = model.userName;
+            user.Phone = model.phoneNo;
+            user.Zipcode = model.zipcode;
+            user.Address = model.address;
+            user.Countryid = model.CountryId;
+            user.Stateid = model.StateId;
+            user.Cityid = model.CityId;
+            user.UpdatedAt = DateTime.Now;
+            user.UpdatedBy = user.Id;
+
+            // Handle Image Upload
+            if (model.ProfileImage != null)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string fileName = $"{Guid.NewGuid()}_{model.ProfileImage.FileName}";
+                string filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ProfileImage.CopyToAsync(fileStream);
+                }
+
+                user.Imgurl = $"/uploads/{fileName}"; // Store relative path in DB
+            }
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ProfileDetails");
+        }
+        return View(model);
+    }
+
+
+
     [HttpGet]
-    public IActionResult ChangePassword(){
+    public IActionResult ChangePassword()
+    {
+        var token = Request.Cookies["SuperSecretAuthToken"];
+        var email = _JwtService.GetClaimValue(token, "email");
+
+        var user = _context.Users.FirstOrDefault(e => e.Email == email);
+        ViewData["UserName"] = user.Username;
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangePassword(ChangePassViewModel model){
+    public async Task<IActionResult> ChangePassword(ChangePassViewModel model)
+    {
         var token = Request.Cookies["SuperSecretAuthToken"];
         var email = _JwtService.GetClaimValue(token, "email");
 
-        var user = _context.Users.Where(u=>u.Email == email).FirstOrDefault();
-        if(user != null && user.Password == _encrypt.EncryptPassword(model.CurrentPassword)){
-            if(model.NewPassword == model.ConfirmNewPassword){
-                user.Password = _encrypt.EncryptPassword(model.NewPassword);
-                user.UpdatedAt = DateTime.Now;
-                user.UpdatedBy = user.Id;
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Login", "Home");
+        var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+        if (user != null)
+        {
+            if (user.Password == _encrypt.EncryptPassword(model.CurrentPassword))
+            {
+                if (model.NewPassword == model.ConfirmNewPassword)
+                {
+                    user.Password = _encrypt.EncryptPassword(model.NewPassword);
+                    user.UpdatedAt = DateTime.Now;
+                    user.UpdatedBy = user.Id;
+                    _context.Users.Update(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Login", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("NotMatched", "Password are not matching");
+                    return View(model);
+                }
             }
             else{
-                ModelState.AddModelError("NotMatched", "Password are not matching");
-                return View(model);
+                ModelState.AddModelError("", "Your Current Password is Wrong");
             }
         }
         return View(model);
@@ -123,5 +195,5 @@ public class DashboardController : Controller
         Console.WriteLine($"Cities Found: {cities.Count}");
 
         return Json(cities);
-}
+    }
 }
