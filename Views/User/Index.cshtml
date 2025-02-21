@@ -1,4 +1,4 @@
-﻿@model PizzashopMVCProject.ViewModels.UserListViewModel
+﻿@* @model PizzashopMVCProject.ViewModels.PaginationViewModel *@
 @{
     ViewData["Title"] = "User List Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -55,20 +55,27 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="userListBody">
 
-                @foreach (var user in Model.Users)
+                @* @foreach (var user in Model.UserList)
                 {
                     <tr>
                         <td class="user_profile">
                             <img src="~/images/Default_pfp.svg.png" alt="" />
-                            <span></span>
+                            <span>@user.UserName</span>
                         </td>
-                        <td>user.Email</td>
-                        <td>user.Phone</td>
-                        <td>user.role</td>
+                        <td>@user.Email</td>
+                        <td>@user.Phone</td>
+                        <td>@user.RoleName</td>
                         <td>
-                            <div class="status active_status">user.status</div>
+                            @if (user.Status)
+                            {
+                                <div class="status active_status">Active</div>
+                            }
+                            else
+                            {
+                                <div class="status inactive_status">Inactive</div>
+                            }
                         </td>
                         <td>
                             <a class="btn user_action" href="./edit_user.html">
@@ -79,109 +86,7 @@
                             </button>
                         </td>
                     </tr>
-                }
-
-
-                @* <tr>
-                    <td class="user_profile">
-                        <img src="~/images/Default_pfp.svg.png" alt="" />
-                        <span>John Doe</span>
-                    </td>
-                    <td>John123@yopmail.com</td>
-                    <td>9088767887</td>
-                    <td>Account</td>
-                    <td>
-                        <div class="status active_status">Active</div>
-                    </td>
-                    <td>
-                        <a class="btn user_action" href="./edit_user.html">
-                            <img src="~/images/icons/edit-pen.svg" alt="" />
-                        </a>
-                        <button class="btn user_action" type="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <img src="~/images/icons/delete-trash-icon.svg" alt="" />
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="user_profile">
-                        <img src="~/images/Default_pfp.svg.png" alt="" />
-                        <span>Alex Den</span>
-                    </td>
-                    <td>alex@yopmail.com</td>
-                    <td>9088767887</td>
-                    <td>Admin</td>
-                    <td>
-                        <div class="status active_status">Active</div>
-                    </td>
-                    <td>
-                        <a class="btn user_action" href="./edit_user.html">
-                            <img src="~/images/icons/edit-pen.svg" alt="" />
-                        </a>
-                        <button class="btn user_action" type="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <img src="~/images/icons/delete-trash-icon.svg" alt="" />
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="user_profile">
-                        <img src="~/images/Default_pfp.svg.png" alt="" />
-                        <span>cris den</span>
-                    </td>
-                    <td>cris@yopmail.com</td>
-                    <td>9088767887</td>
-                    <td>Cheff</td>
-                    <td>
-                        <div class="status active_status">Active</div>
-                    </td>
-                    <td>
-                        <a class="btn user_action" href="./edit_user.html">
-                            <img src="~/images/icons/edit-pen.svg" alt="" />
-                        </a>
-                        <button class="btn user_action" type="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <img src="~/images/icons/delete-trash-icon.svg" alt="" />
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="user_profile">
-                        <img src="~/images/Default_pfp.svg.png" alt="" />
-                        <span>Ronee Smith</span>
-                    </td>
-                    <td>ronee123@yopmail.com</td>
-                    <td>9088767887</td>
-                    <td>Account</td>
-                    <td>
-                        <div class="status active_status">Active</div>
-                    </td>
-                    <td>
-                        <a class="btn user_action" href="./edit_user.html">
-                            <img src="~/images/icons/edit-pen.svg" alt="" />
-                        </a>
-                        <button class="btn user_action" type="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <img src="~/images/icons/delete-trash-icon.svg" alt="" />
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="user_profile">
-                        <img src="~/images/Default_pfp.svg.png" alt="" />
-                        <span>Ronee Smit </span>
-                    </td>
-                    <td>ronee@yopmail.com</td>
-                    <td>9088767887</td>
-                    <td>Account</td>
-                    <td>
-                        <div class="status active_status">Active</div>
-                    </td>
-                    <td>
-                        <a class="btn user_action" href="./edit_user.html">
-                            <img src="~/images/icons/edit-pen.svg" alt="" />
-                        </a>
-                        <button class="btn user_action" type="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                            <img src="~/images/icons/delete-trash-icon.svg" alt="" />
-                        </button>
-                    </td>
-                </tr> *@
+                } *@
             </tbody>
         </table>
         <!-- Paggination Frontend Start -->
@@ -189,19 +94,22 @@
             <span>Items per page:</span>
 
             <!-- Page  Numbers Drop Down -->
-            <select class="form-select w-auto" aria-label="Default select example">
-                <option selected>5</option>
+            <select class="form-select w-auto" aria-label="Default select example" id="selectPageSize">
+                <option selected>3</option>
+                <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
-                <option value="20">20</option>
             </select>
 
-            <span style="margin-left: 8px">Showing 1-5 of 11</span>
+            <span style="margin-left: 8px">
+                @* Showing @((Model.PageNo - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageNo * Model.PageSize,
+                Model.TotalRecords)) of @Model.TotalRecords *@
+            </span>
 
-            <button class="btn border border-black prev_page">
+            <button type="button" class="btn border border-black prev_page" id="prevPageIcon">
                 <img src="~/images/icons/chevron-left.svg" alt="" />
             </button>
-            <button class="btn border border-black">
+            <button type="button" class="btn border border-black" id="nextPageIcon">
                 <img src="~/images/icons/chevron-right.svg" alt="" />
             </button>
         </div>
@@ -234,3 +142,204 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <script>
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            pageNo = 1;
+            $.ajax({
+                url: '@Url.Action("GetUserList", "User")',
+                type: "GET",
+                data: { pageNo: pageNo, pageSize: $("#selectPageSize").val() },
+                success: function (users) {
+                    @* console.log("Page pageSize select"); *@
+                    console.log(users);
+                    $.each(users, function (index, user) {
+                        $("#userListBody").append(`
+                            <tr>
+                                <td>
+                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
+                                    ${user.userName}
+                                </td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td>${user.roleName}</td>
+                                <td>
+                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
+
+                                </td>
+                                <td>
+                                    <a class="btn user_action" href="./edit_user.html">
+                                        <img src="/images/icons/edit-pen.svg" alt="" />
+                                    </a>
+                                    <button
+                                        class="btn user_action"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#myModal"
+                                    >
+                                        <img src="/images/icons/delete-trash-icon.svg" alt="" />
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function () {
+                    console.error(users);
+                    alert("Error loading users");
+                }
+            });
+        })
+
+        $("#selectPageSize").change(function () {
+            console.log("H");
+
+            var pageSize = $(this).val();
+            $.ajax({
+                url: '@Url.Action("GetUserList", "User")',
+                type: "GET",
+                data: { pageNo: 1, pageSize: pageSize },
+                success: function (users) {
+                    $("#userListBody").empty();
+                    console.log(users);
+                    $.each(users, function (index, user) {
+
+                        $("#userListBody").append(`
+                            <tr>
+                                <td>
+                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
+                                    ${user.userName}
+                                </td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td>${user.roleName}</td>
+                                <td>
+                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
+
+                                </td>
+                                <td>
+                                    <a class="btn user_action" href="./edit_user.html">
+                                        <img src="/images/icons/edit-pen.svg" alt="" />
+                                    </a>
+                                    <button
+                                        class="btn user_action"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#myModal"
+                                    >
+                                        <img src="/images/icons/delete-trash-icon.svg" alt="" />
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function () {
+                    console.error(users);
+                    alert("Error loading users");
+                }
+            });
+        })
+
+        $("#nextPageIcon").click(function () {
+            console.log("H");
+
+            var pageSize = $("#selectPageSize").val();
+            pageNo++;
+            $.ajax({
+                url: '@Url.Action("GetUserList", "User")',
+                type: "GET",
+                data: { pageNo: pageNo, pageSize: pageSize },
+                success: function (users) {
+                    $("#userListBody").empty();
+                    $.each(users, function (index, user) {
+                        $("#userListBody").append(`
+                            <tr>
+                                <td>
+                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
+                                    ${user.userName}
+                                </td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td>${user.roleName}</td>
+                                <td>
+                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
+
+                                </td>
+                                <td>
+                                    <a class="btn user_action" href="./edit_user.html">
+                                        <img src="/images/icons/edit-pen.svg" alt="" />
+                                    </a>
+                                    <button
+                                        class="btn user_action"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#myModal"
+                                    >
+                                        <img src="/images/icons/delete-trash-icon.svg" alt="" />
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function () {
+                    console.error(users);
+                    alert("Error loading users");
+                }
+            });
+        })
+
+        $("#prevPageIcon").click(function () {
+            console.log("H");
+            var pageSize = $("#selectPageSize").val();
+            pageNo--;
+            $.ajax({
+                url: '@Url.Action("GetUserList", "User")',
+                type: "GET",
+                data: { pageNo: pageNo, pageSize: pageSize },
+                success: function (users) {
+                    $("#userListBody").empty();
+                    $.each(users, function (index, user) {
+                        $("#userListBody").append(`
+                            <tr>
+                                <td>
+                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
+                                    @* ${user.userName} *@
+                                </td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td>${user.roleName}</td>
+                                <td>
+                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
+
+                                </td>
+                                <td>
+                                    <a class="btn user_action" href="./edit_user.html">
+                                        <img src="/images/icons/edit-pen.svg" alt="" />
+                                    </a>
+                                    <button
+                                        class="btn user_action"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#myModal"
+                                    >
+                                        <img src="/images/icons/delete-trash-icon.svg" alt="" />
+                                    </button>
+                                </td>
+                            </tr>
+                         `);
+                    });
+                },
+                error: function () {
+                    console.error(users);
+                    alert("Error loading users");
+                }
+            });
+        })
+    </script>
+}

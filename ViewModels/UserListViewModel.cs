@@ -5,7 +5,11 @@ namespace PizzashopMVCProject.ViewModels
 {
     public class UserListViewModel
     {
-        public List<User> Users { get; set; } = new List<User>();
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public int  Phone { get; set; }
+        public string RoleName { get; set; }
+        public bool Status { get; set; }
         
     }
 }
