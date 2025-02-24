@@ -38,7 +38,7 @@
         <form id="profileForm" asp-action="ProfileDetails" asp-controller="Dashboard" method="post"
             enctype="multipart/form-data">
             <input type="file" id="uploadImage" name="ProfileImage" hidden />
-            <input type="hidden" name="ProfileImagePath" value="@Model.Imgurl" />
+            <input type="hidden" name="ProfileImagePath" />
 
             <div class="row">
                 <div class="form-floating col-md-6 mb-3">
@@ -173,7 +173,7 @@
                                     $("#city").append('<option value="' + city.cityId + '">' + city.name + '</option>');
                                 });
 
-                                // ✅ Automatically select the first city
+                                // Automatically select the first city
                                 $("#city").val(cities[0].id).trigger("change");
                             }
                         },
@@ -186,28 +186,73 @@
             });
 
 
-            // Form Submission via AJAX
             $("#profileForm").submit(function (event) {
-                event.preventDefault();
-                var formData = new FormData(this);
-                $.ajax({
-                    url: '@Url.Action("ProfileDetails", "Dashboard")',
-                    type: "POST",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function () {
-                        @* alert("Profile updated successfully!"); *@
-                            console.log("Profile updated successfully!");
+            event.preventDefault();
+            let isValid = true;
 
-                        location.reload(); // Refresh page to reflect changes
-                    },
-                    error: function () {
-                        @* alert("Error updating profile"); *@
-                            console.log("Error : loading profile")
+                // Required Field Validation (Except Image)
+                $("#profileForm input[type='text'], #profileForm select").each(function () {
+                    let inputValue = $(this).val().trim();
+
+                    if (!inputValue || inputValue === "0") {
+                        $(this).addClass("is-invalid"); // Add error styling
+                        $(this).next(".invalid-feedback").remove(); // Remove old message
+                        $(this).after('<div class="invalid-feedback">This field is required</div>');
+                        isValid = false;
+                    } else {
+                        $(this).removeClass("is-invalid");
+                        $(this).next(".invalid-feedback").remove();
                     }
                 });
+
+                //Phone Number Validation (Must be 10 Digits)
+                let phoneNumber = $("#phone").val().trim();
+                if (phoneNumber === "" || phoneNumber === "0" || !/^\d{10}$/.test(phoneNumber)) {
+                    $("#phone").addClass("is-invalid");
+                    $("#phone").next(".invalid-feedback").remove();
+                    $("#phone").after('<div class="invalid-feedback">Phone number must be exactly 10 digits</div>');
+                    isValid = false;
+                } else {
+                    $("#phone").removeClass("is-invalid");
+                    $("#phone").next(".invalid-feedback").remove();
+                }
+
+                // Zipcode Validation (Must Not Be Empty or 0)
+                let zipcode = $("#zipcode").val().trim();
+                if (zipcode === "" || zipcode === "0") {
+                    $("#zipcode").addClass("is-invalid");
+                    $("#zipcode").next(".invalid-feedback").remove();
+                    $("#zipcode").after('<div class="invalid-feedback">Zipcode is required</div>');
+                    isValid = false;
+                } else {
+                    $("#zipcode").removeClass("is-invalid");
+                    $("#zipcode").next(".invalid-feedback").remove();
+                }
+
+                // Submit form only if valid
+                if (isValid) {
+                    var formData = new FormData(this);
+                    $.ajax({
+                        url: '@Url.Action("ProfileDetails", "Dashboard")',
+                        type: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            toastr.success("Profile updated successfully!");
+                        },
+                        error: function () {
+                            toastr.error("Error updating profile");
+                        }
+                    });
+                }
             });
+
+    // Remove error styling when user types
+    $("#profileForm input, #profileForm select").on("input change", function () {
+        $(this).removeClass("is-invalid");
+        $(this).next(".invalid-feedback").remove();
+    });
         });
     </script>
 }

@@ -17,7 +17,7 @@ public class JwtService
         _audience = configuration["JwtConfig:Audience"];
     }
 
-    public string GenerateJwtToken(string email, string role)
+    public string GenerateJwtToken(string email, string role, string userName, string imgUrl)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_key); // Secret Code (Salt)
@@ -26,11 +26,13 @@ public class JwtService
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role),
+                new Claim("email", email),
+                new Claim("role", role),
+                new Claim("userName", userName),
+                new Claim("imgUrl", imgUrl)
                 //new Claim("ClaimName", "Dynamic Value for Claim") Custom Claim
             }),
-            Expires = DateTime.UtcNow.AddHours(1),
+            Expires = DateTime.UtcNow.AddMinutes(30),
             Issuer = _issuer,
             Audience = _audience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
@@ -39,6 +41,38 @@ public class JwtService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
+
+
+     // ✅ Validate the Token
+    public bool ValidateToken(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+            return false;
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Convert.FromBase64String(_key); // Convert key to byte array
+
+        try
+        {
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false, 
+                ValidateAudience = false, 
+                ValidateLifetime = true, 
+                ClockSkew = TimeSpan.Zero 
+            }, out _);
+
+            return true; // Token is valid
+        }
+        catch
+        {
+            return false; //Token is invalid
+        }
+    }
+
 
     // Extracts claims from a JWT token.
     public ClaimsPrincipal? GetClaimsFromToken(string token)

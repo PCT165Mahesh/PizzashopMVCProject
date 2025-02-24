@@ -5,6 +5,7 @@ namespace PizzashopMVCProject.ViewModels
 {
     public class UserListViewModel
     {
+        public long UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 

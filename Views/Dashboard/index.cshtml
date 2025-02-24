@@ -19,3 +19,28 @@
         </select>
     </div>
 </div>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000",
+                "extendedTimeOut": "2000",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "iconClass": "" // Removes default icons
+            };
+
+            // Retrieve messages from TempData
+            var successMessage = '@TempData["SuccessMessage"]';
+
+            if (successMessage && successMessage.trim() !== "") {
+                toastr.success(successMessage, "Success!");
+            }
+        });
+    </script>
+}

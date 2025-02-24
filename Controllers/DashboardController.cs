@@ -27,14 +27,18 @@ public class DashboardController : Controller
     public IActionResult Index()
     {
         var token = Request.Cookies["SuperSecretAuthToken"];
-        var email = _JwtService.GetClaimValue(token, "email");
+
+
+        var userName = _JwtService.GetClaimValue(token, "userName");
+        var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
+        
+
         // var role = _JwtService.GetClaimValue(token, "role");
         ViewData["ActiveLink"] = "Dashboard";
 
-        var user = _context.Users.Where(e => e.Email == email).Select(x=> new {x.Username, x.Imgurl}).FirstOrDefault();
         DashboardViewModel model = new DashboardViewModel();
-        ViewData["UserName"] = user.Username;
-        ViewData["ImgUrl"] = user.Imgurl;
+        ViewData["UserName"] = userName;
+        ViewData["ImgUrl"] = imgUrl;
         return View(model);
     }
 
@@ -42,13 +46,18 @@ public class DashboardController : Controller
     public IActionResult ProfileDetails()
     {
         var token = Request.Cookies["SuperSecretAuthToken"];
+
+         //  Validate the Token
+    
+
+
         var email = _JwtService.GetClaimValue(token, "email");
-        // var role = _JwtService.GetClaimValue(token, "role");
+        var userName = _JwtService.GetClaimValue(token, "userName");
+        var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
 
 
         var user = _context.Users.Where(e => e.Email == email).FirstOrDefault();
         var roleObj = _context.Roles.Where(u=>u.RoleId == user.Roleid).FirstOrDefault();
-        ViewData["UserName"] = user.Username;
 
         ProfileDataViewModel model = new ProfileDataViewModel();
         if (user != null)
@@ -69,6 +78,9 @@ public class DashboardController : Controller
             model.States = _context.States.Where(s => s.Countryid == user.Countryid).ToList();
             model.Cities = _context.Cities.Where(c => c.Stateid == user.Stateid).ToList();
         }
+
+        ViewData["UserName"] = userName;
+        ViewData["ImgUrl"] = imgUrl;
         return View(model);
     }
 
@@ -78,6 +90,8 @@ public class DashboardController : Controller
     public async Task<IActionResult> ProfileDetails(ProfileDataViewModel model)
     {
         var token = Request.Cookies["SuperSecretAuthToken"];
+     
+
         var email = _JwtService.GetClaimValue(token, "email");
 
         var user = _context.Users.FirstOrDefault(e => e.Email == email);
@@ -128,10 +142,15 @@ public class DashboardController : Controller
     public IActionResult ChangePassword()
     {
         var token = Request.Cookies["SuperSecretAuthToken"];
-        var email = _JwtService.GetClaimValue(token, "email");
 
-        var user = _context.Users.FirstOrDefault(e => e.Email == email);
-        ViewData["UserName"] = user.Username;
+        
+
+        var userName = _JwtService.GetClaimValue(token, "userName");
+        var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
+
+        
+        ViewData["UserName"] = userName;
+        ViewData["ImgUrl"] = imgUrl;
         return View();
     }
 
@@ -139,35 +158,52 @@ public class DashboardController : Controller
     public async Task<IActionResult> ChangePassword(ChangePassViewModel model)
     {
         var token = Request.Cookies["SuperSecretAuthToken"];
+         //  Validate the Token
+        
         var email = _JwtService.GetClaimValue(token, "email");
 
-        var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
-        if (user != null)
+        var user = _context.Users.FirstOrDefault(u => u.Email == email);
+
+        if (user == null)
         {
-            if (user.Password == _encrypt.EncryptPassword(model.CurrentPassword))
-            {
-                if (model.NewPassword == model.ConfirmNewPassword)
-                {
-                    user.Password = _encrypt.EncryptPassword(model.NewPassword);
-                    user.UpdatedAt = DateTime.Now;
-                    user.UpdatedBy = user.Id;
-                    _context.Users.Update(user);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Login", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("NotMatched", "Password are not matching");
-                    return View(model);
-                }
-            }
-            else{
-                ModelState.AddModelError("", "Your Current Password is Wrong");
-            }
+            TempData["ErrorMessage"] = "User not found!";
+            return RedirectToAction("ChangePassword");
         }
-        return View(model);
+
+        if (user.Password != _encrypt.EncryptPassword(model.CurrentPassword))
+        {
+            TempData["ErrorMessage"] = "Current password is incorrect.";
+            return RedirectToAction("ChangePassword"); // Redirect ensures TempData persists
+        }
+
+        if (model.NewPassword != model.ConfirmNewPassword)
+        {
+            TempData["ErrorMessage"] = "New passwords do not match.";
+            return RedirectToAction("ChangePassword");
+        }
+
+        // Update password
+        user.Password = _encrypt.EncryptPassword(model.NewPassword);
+        user.UpdatedAt = DateTime.Now;
+        user.UpdatedBy = user.Id;
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Password updated successfully!";
+        return RedirectToAction("ChangePassword");
     }
 
+
+
+    [HttpGet]
+    public JsonResult GetCountries()
+    {
+        var countries = _context.Countries
+            .Select(c => new { c.CountryId, c.Name })
+            .ToList();
+        return Json(countries);
+    }
 
 
     [HttpGet]
@@ -195,5 +231,13 @@ public class DashboardController : Controller
         Console.WriteLine($"Cities Found: {cities.Count}");
 
         return Json(cities);
+    }
+
+    [HttpGet]
+    public JsonResult GetRoles()
+    {
+
+        var roles = _context.Roles.ToList();
+        return Json(roles);
     }
 }

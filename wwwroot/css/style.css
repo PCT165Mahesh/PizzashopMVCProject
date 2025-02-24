@@ -3,7 +3,13 @@
   padding: 0;
 }
 
-body{
+html,
+body {
+  /* overflow: hidden; */
+  width: 100%;
+}
+
+body {
   background-color: #f2f2f2 !important;
 }
 
@@ -43,7 +49,7 @@ body{
 /* Login-form :- Placeholder Icon */
 .placeholder_icon {
   position: absolute;
-  top: 14px;
+  top: 19px;
   right: 11px;
 }
 
@@ -65,7 +71,7 @@ body{
 /* Side Navigation Bar */
 .sidebar {
   width: 260px !important;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #ffffff;
 }
 
@@ -114,7 +120,7 @@ body{
   background-color: #e9eaeb !important;
 }
 
-.active >a>span{
+.active > a > span {
   color: #0066a7 !important;
 }
 
@@ -126,7 +132,7 @@ body{
 
 .body_content {
   width: calc(100% - 260px);
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #f2f2f2;
   padding: 15px 36px 15px;
 }
@@ -157,6 +163,21 @@ body{
   padding: 14px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   margin-top: 12px;
+
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
+/* * Ensure table cells do not break content */
+*/ .table {
+  min-width: 800px; /* Set a minimum width to prevent squeezing */
+}
+
+/* Ensure table headers and cells maintain their width */
+.table th,
+.table td {
+  white-space: nowrap;
 }
 
 .table_container td {
@@ -184,7 +205,7 @@ body{
   background-color: #99d363;
 }
 
-.inactive_status{
+.inactive_status {
   background-color: rgb(207, 48, 48);
 }
 
@@ -326,15 +347,13 @@ input[type="file"] {
   color: #0066a7;
 }
 
-
-
 /* Profile Data CSS part */
-#profileImageContainer{
+#profileImageContainer {
   top: -20px;
   left: 23px;
 }
 
-#cameraImageContainer{
+#cameraImageContainer {
   cursor: pointer;
   width: fit-content;
   height: fit-content;
@@ -343,7 +362,53 @@ input[type="file"] {
   left: -4px;
 }
 
+/* Toaster CSS */
+/* Custom Toastr Styles */
+.toast-success {
+  background-color: #28a745 !important; /* Green for success */
+  color: white !important;
+}
 
+.toast-error {
+  background-color: #dc3545 !important; /* Red for errors */
+  color: white !important;
+}
+
+.toast-info {
+  background-color: #17a2b8 !important; /* Blue for info */
+  color: white !important;
+}
+
+.toast-warning {
+  background-color: #ffc107 !important; /* Yellow for warning */
+  color: black !important;
+}
+
+.toast-message {
+  margin-left: 34px;
+}
+
+.toast-title {
+  display: none !important;
+}
+
+/* Customize the Toastr position */
+#toast-container > div {
+  border-radius: 8px !important;
+  padding: 15px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+/* Hide the default browser password reveal icon */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
+}
 
 /* Media Query */
 

@@ -143,6 +143,7 @@
                 } else {
                     console.log(users);
                     $.each(users, function (index, user) {
+                    console.log(user.userId)
                         $("#userListBody").append(`
                             <tr>
                                 <td>
@@ -157,12 +158,12 @@
                                     ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
                                 </td>
                                 <td>
-                                    <a class="btn user_action" href="@Url.Action("EditUser", "User")?id=${user.id}">
+                                    <a class="btn user_action" href="@Url.Action("EditUser", "User")?id=${user.userId}">
                                         <img src="/images/icons/edit-pen.svg" alt="" />
                                     </a>
-                                    <button class="btn user_action user_action_delete" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#myModal">
+                                    <a class="btn user_action user_action_delete" href="@Url.Action("DeleteUser", "User")?id=${user.userId} data-id="${user.userId}" data-bs-toggle="modal" data-bs-target="#myModal">
                                         <img src="/images/icons/delete-trash-icon.svg" alt="" />
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                         `);

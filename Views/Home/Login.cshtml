@@ -1,127 +1,175 @@
 ﻿@model PizzashopMVCProject.ViewModels.LoginViewModel;
 @{
-    ViewData["Title"] = "Home Page";
-    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+  ViewData["Title"] = "Home Page";
+  Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
 <!-- Main Container That Hold the left and right part of Login Page -->
-    <div class="row d-flex d-flex main_container vh-100 m-0">
-      <!-- Left Section :- Pizza image -->
-      <div class="d-none d-lg-block col-lg-6 col_section p-0 pizza_main_img">
-        <img
-          src="./images/dominos_background.jpg"
-          alt=""
-          class="domino_image"
-        />
+<div class="row d-flex d-flex main_container vh-100 m-0">
+  <!-- Left Section :- Pizza image -->
+  <div class="d-none d-lg-block col-lg-6 col_section p-0 pizza_main_img">
+    <img src="~/images/dominos_background.jpg" alt="" class="domino_image" />
+  </div>
+
+  <!-- Right Section : Login Side Part -->
+  <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center right_section p-0">
+    <!-- Login Section Rows -->
+    <div class="right_section_login row d-flex flex-column" style="width: 80%">
+      <!-- Pizzashop Logo -->
+      <div class="fs-1 col d-flex justify-content-center align-items-center">
+        <img src="~/images/logos/pizzashop_logo.png" alt="" class="pizzashop_img" />
+        <span class="pizzashop_name heading_color">PIZZASHOP</span>
+      </div>
+      <!-- Welcome Slogan -->
+      <div class="fs-3 my-2 fw-medium col">
+        <span>Welcome,</span>
       </div>
 
-      <!-- Right Section : Login Side Part -->
-      <div
-        class="col-lg-6 d-flex flex-column justify-content-center align-items-center right_section p-0"
-      >
-        <!-- Login Section Rows -->
-        <div
-          class="right_section_login row d-flex flex-column"
-          style="width: 80%"
-        >
-          <!-- Pizzashop Logo -->
-          <div
-            class="fs-1 col d-flex justify-content-center align-items-center"
-          >
-            <img
-              src="./images/logos/pizzashop_logo.png"
-              alt=""
-              class="pizzashop_img"
-            />
-            <span class="pizzashop_name heading_color">PIZZASHOP</span>
-          </div>
-          <!-- Welcome Slogan -->
-          <div class="fs-3 my-2 fw-medium col">
-            <span>Welcome,</span>
+
+
+      <!-- Login Form -->
+      <div class="col">
+        <form method="post" , asp-action="Login" asp-controller="Home" id="loginForm">
+          <!-- Email Field -->
+          <div class="mb-3 position-relative">
+            <input type="email" asp-for="@Model.Email" class="form-control p-2" id="LoginEmail"
+              aria-describedby="emailHelp" placeholder="Email*" />
+            <span class="text-danger email-error"></span>
+            <img class="placeholder_icon" src="~/images/icons/customer.svg" />
+
+            @* <span asp-validation-for="@Model.Email" class="text-danger"></span> *@
+            @* <p class="validation_msg">Email is Required</p> *@
           </div>
 
-          
+          <!-- Password Field -->
+          <div class="mb-3 position-relative">
+            <input type="password" asp-for="@Model.Password" class="form-control p-2" id="password"
+              placeholder="Password*" />
+            <span class="text-danger password-error"></span>
 
-          <!-- Login Form -->
-          <div class="col">
-            <form method="post", asp-action="Login">
-              <!-- Email Field -->
-              <div class="mb-3 position-relative">
-                <input
-                  type="email"
-                  asp-for="@Model.Email"
-                  class="form-control p-2"
-                  id="LoginEmail"
-                  aria-describedby="emailHelp"
-                  placeholder="Email*"
-                  
-                />
-                <img
-                  class="placeholder_icon"
-                  src="./images/icons/customer.svg"
-                />
-                <span asp-validation-for="@Model.Email" class="text-danger"></span>
-                @* <p class="validation_msg">Email is Required</p> *@
-              </div>
-
-              <!-- Password Field -->
-              <div class="mb-3 position-relative">
-                <input
-                  type="password"
-                  asp-for="@Model.Password"
-                  class="form-control p-2"
-                  id="password"
-                  placeholder="Password*"
-                  
-                />
-                <img
-                  class="placeholder_icon"
-                  src="./images/icons/eye-close.svg"
-                  width="20px"
-                />
-                <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                @* <p class="validation_msg">Password is Required</p> *@
-              </div>
-
-              <!-- Form Footer -->
-              <div
-                class="d-flex flex-sm-row justify-content-sm-between flex-column justify-content-center"
-              >
-                <!-- Remember me check box -->
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    asp-for="@Model.RememberMe"
-                    class="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label class="form-check-label" for="exampleCheck1"
-                    >Remember me</label
-                  >
-                </div>
-                <!-- Forgot Password Link -->
-                <a id="forgotPasswordLink" class="text-decoration-none"
-                  >Forgot Password?</a>
-                @* Validation Summary For A Incorrect Credentials *@
-                @Html.ValidationSummary(true)
-              </div>
-              <!-- Submit Button -->
-              <button type="submit" class="mt-2 btn submit_btn w-100">
-                Submit
-              </button>
-
-            </form>
+            <img class="placeholder_icon" src="~/images/icons/eye-close.svg" width="20px" id="togglePassword" />
+            @* <span asp-validation-for="@Model.Password" class="text-danger"></span> *@
+            @* <p class="validation_msg">Password is Required</p> *@
           </div>
-        </div>
+
+          <!-- Form Footer -->
+          <div class="d-flex flex-sm-row justify-content-sm-between flex-column justify-content-center">
+            <!-- Remember me check box -->
+            <div class="mb-3 form-check">
+              <input type="checkbox" asp-for="@Model.RememberMe" class="form-check-input" id="exampleCheck1" />
+              <label class="form-check-label" for="exampleCheck1">Remember me</label>
+            </div>
+            <!-- Forgot Password Link -->
+            <a id="forgotPasswordLink" class="text-decoration-none">Forgot Password?</a>
+            @* Validation Summary For A Incorrect Credentials *@
+            @* @Html.ValidationSummary(true) *@
+          </div>
+          <!-- Submit Button -->
+          <button type="submit" class="mt-2 btn submit_btn w-100">
+            Submit
+          </button>
+
+        </form>
       </div>
     </div>
+  </div>
+</div>
 
 @section Scripts
 {
-    <script>
-        document.getElementById('forgotPasswordLink').addEventListener('click', function() {
-            var email = document.getElementById("LoginEmail").value;
-            this.href = '@Url.Action("ForgotPassword", "Home")' + '?Email=' + encodeURIComponent(email);
-        });
-    </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+
+      $("#loginForm").submit(function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        let isValid = true;
+        let emailInput = document.getElementById("LoginEmail");
+        let password = $("#password").val().trim();
+
+        //  Email Validation (Using Built-in Validity API)
+        if (emailInput.value.trim() === "") {
+          $("#LoginEmail").next(".email-error").text("Email is required.");
+          console.log("Email Error");
+          isValid = false;
+        }
+        else if (!emailInput.checkValidity()) {
+          $("#LoginEmail").next(".email-error").text("Enter a valid email address.");
+          console.log("Email Error");
+          isValid = false;
+        }
+        else {
+          $("#LoginEmail").next(".email-error").text("");
+        }
+
+        @* Password Validation (Without Special Character List) *@
+                
+                
+
+          if (password === "") {
+          $(".password-error").text("Password is required.");
+          console.log("Password is required.");
+          isValid = false;
+        }
+        // ✅ If validation passes, submit form using AJAX
+        if (isValid) {
+          $("#loginForm").off("submit").submit();
+        }
+      });
+
+      // ✅ Clear validation messages on input change
+      $("input").on("input", function () {
+        $(this).next(".text-danger").text("");
+      });
+
+      $("#togglePassword").click(function () {
+        let passwordField = $("#password");
+        let fieldType = passwordField.attr("type");
+
+        // Toggle between password & text
+        if (fieldType === "password") {
+          passwordField.attr("type", "text");
+          $(this).attr("src", "/images/icons/eye.svg"); // Change to open eye
+        } else {
+          passwordField.attr("type", "password");
+          $(this).attr("src", "/images/icons/eye-close.svg"); // Change to closed eye
+        }
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+
+      toastr.options = {
+        "closeButton": true,  // Adds a close button
+        "progressBar": true,  // Shows a progress bar
+        "positionClass": "toast-top-right",  // Position of toast
+        "timeOut": "5000",  // Auto-close after 5 seconds
+        "extendedTimeOut": "2000",  // Extra time if hovered
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "iconClass": ""  // Removes the icon class
+      };
+
+      var successMessage = '@(TempData["SuccessMessage"] ?? "")';
+      var errorMessage = '@(TempData["ErrorMessage"] ?? "")';
+
+      if (successMessage && successMessage.trim() !== "") {
+        toastr.success(successMessage);
+      }
+
+      if (errorMessage.trim() !== "") {
+        toastr.error(errorMessage);
+      }
+    });
+  </script>
+
+  <script>
+    document.getElementById('forgotPasswordLink').addEventListener('click', function () {
+      var email = document.getElementById("LoginEmail").value;
+      this.href = '@Url.Action("ForgotPassword", "Home")' + '?Email=' + encodeURIComponent(email);
+    });
+  </script>
 }

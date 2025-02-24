@@ -64,38 +64,44 @@ public class HomeController : Controller
                         x.Roleid,
                         x.Email,
                         x.Password,
+                        x.Username,
+                        x.Imgurl
                     })
                     .FirstOrDefaultAsync();
 
             
 
-            var roleObj = await _context.Roles.Where(p=>p.RoleId == users.Roleid).FirstOrDefaultAsync();
 
-            if(users != null && users.Password == _encrypt.EncryptPassword(model.Password) ){
+            if(users != null){
+                var roleObj = await _context.Roles.Where(p=>p.RoleId == users.Roleid).FirstOrDefaultAsync();
 
-                // JWT Token Generation
-                string token = _jwtService.GenerateJwtToken(users.Email, roleObj.Rolename);
+                if(users.Password == _encrypt.EncryptPassword(model.Password) ){
 
-                // Store the JWT Token into Cookies
-                Response.Cookies.Append("SuperSecretAuthToken", token, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    Expires = DateTime.UtcNow.AddHours(10)
-                });
+                    // JWT Token Generation
+                    string token = _jwtService.GenerateJwtToken(users.Email, roleObj.Rolename, users.Username, users.Imgurl);
 
-                // Remember Me :- Using Cookie
-                if(model.RememberMe == true){
-                    Response.Cookies.Append("UserEmail", model.Email, options);
+                    // Store the JWT Token into Cookies
+                    Response.Cookies.Append("SuperSecretAuthToken", token, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        Expires = DateTime.UtcNow.AddHours(10)
+                    });
+
+                    // Remember Me :- Using Cookie
+                    if(model.RememberMe == true){
+                        Response.Cookies.Append("UserEmail", model.Email, options);
+                    }
+                    TempData["SuccessMessage"] = "Login Successful!";
+                    return RedirectToAction("Index", "Dashboard");
                 }
-                return RedirectToAction("Index", "Dashboard");
+                TempData["ErrorMessage"] = "Invalid Email or Password!";
             }
             else{
-                ModelState.AddModelError("password", "Incorrect Credentials");
+                TempData["ErrorMessage"] = "Invalid Email or Password!";
             }
             return View(model);
         }
-
         return View(model);
     }
 
@@ -169,10 +175,12 @@ public class HomeController : Controller
         
         if(ModelState.IsValid){
             if(user != null){
+                TempData["SuccessMessage"] = "Email sent successfully";
                 await _emailSender.SendEmailAsync(model.Email, "Password Reset Link", emailBody);
             }
             else{
                 ModelState.AddModelError("", "Email Is not found");
+                TempData["ErrorMessage"] = "Email is not Register";
             }
             return View();
         }
@@ -199,6 +207,7 @@ public class HomeController : Controller
                     _context.Users.Update(user);
                     // await _context.Users.Update(user);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Password Reset successfully";
                     return RedirectToAction("Login");
                 }
                 else{
@@ -220,5 +229,4 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
-
 

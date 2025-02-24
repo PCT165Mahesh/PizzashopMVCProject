@@ -93,6 +93,10 @@
       "PackagePath": "staticwebassets\\images\\icons\\eye-close.svg"
     },
     {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\eye.svg",
+      "PackagePath": "staticwebassets\\images\\icons\\eye.svg"
+    },
+    {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\images\\icons\\grid-3x2.svg",
       "PackagePath": "staticwebassets\\images\\icons\\grid-3x2.svg"
     },
@@ -457,8 +461,24 @@
       "PackagePath": "staticwebassets\\uploads\\45d18989-758e-4e59-b86e-d1d5cb2f3191_dominos_background.jpg"
     },
     {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\890488db-7235-45ab-b8f5-e83bccdcb797_transperent-pizza.png",
+      "PackagePath": "staticwebassets\\uploads\\890488db-7235-45ab-b8f5-e83bccdcb797_transperent-pizza.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\9fbbea3e-4d6b-494b-a774-5e86fee24c43_transperent-pizza.png",
+      "PackagePath": "staticwebassets\\uploads\\9fbbea3e-4d6b-494b-a774-5e86fee24c43_transperent-pizza.png"
+    },
+    {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\Default_pfp.svg.png",
       "PackagePath": "staticwebassets\\uploads\\Default_pfp.svg.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\cd45f21e-b66f-4dc9-87de-32c61306c84a_dining-menu.png",
+      "PackagePath": "staticwebassets\\uploads\\cd45f21e-b66f-4dc9-87de-32c61306c84a_dining-menu.png"
+    },
+    {
+      "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\f63e7dba-3c3c-4bfa-a5ed-18f9b883ce17_dominos_background.jpg",
+      "PackagePath": "staticwebassets\\uploads\\f63e7dba-3c3c-4bfa-a5ed-18f9b883ce17_dominos_background.jpg"
     },
     {
       "Id": "D:\\Projects\\PizzashopMVCProject\\wwwroot\\uploads\\f8912749-dacd-49c9-bd2a-2eb154be9b02_transperent-pizza.png",

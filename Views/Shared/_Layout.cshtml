@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PizzashopMVCProject</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -29,12 +30,15 @@
             </div>
             <!-- User Profile Image -->
             <div class="dropdown">
-                <img src="~/uploads/Default_pfp.svg.png" alt="" class="rounded-circle me-3" height="50px" width="50px"
-                    class="me-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img 
+                src="@(string.IsNullOrEmpty(ViewData["ImgUrl"] as string) ? "/uploads/Default_pfp.svg.png" : ViewData["ImgUrl"])"
+                alt="" class="rounded-circle me-3" height="50px" width="50px"
+                class="me-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li class="border-bottom"><a class="dropdown-item" href="#">
-                            <img src="~/images/Default_pfp.svg.png" alt="" width="40px">
+                    <li class="border-bottom"><a class="dropdown-item">
+                            <img src="@(string.IsNullOrEmpty(ViewData["ImgUrl"] as string) ? "/uploads/Default_pfp.svg.png" : ViewData["ImgUrl"])"
+                             alt="" width="40px" height="40px" class="rounded-circle">
                             <span class="ms-2">@ViewData["UserName"]</span>
                         </a></li>
                     <li class="mt-2"><a class="dropdown-item" asp-action="ProfileDetails" asp-controller="Dashboard">
@@ -56,7 +60,7 @@
     </nav>
     <!-- Navbar Upper Ends -->
 
-    <div class="main_body d-flex">
+    <div class="main_body d-flex" style="height: 93vh !important;">
         <!-- Left Navigation Panel Starts-->
         <nav class="d-none d-lg-block sidebar d-flex flex-column align-items-center">
             <ul>
@@ -215,7 +219,8 @@
     </div>
 
 
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

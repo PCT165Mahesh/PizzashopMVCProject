@@ -1,0 +1,185 @@
+﻿@{
+    ViewData["Title"] = "Edit User Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="body_content">
+        <!-- Edit User Starts-->
+        <div class="d-flex flex-row justify-content-between user_list_header">
+          <!-- Edit User Header -->
+          <div class="user_header fs-2 fs-lg-1">
+            <span>Edit User</span>
+          </div>
+          <!-- Back Button -->
+          <a
+            href="./user_list.html"
+            class="btn back_btn d-flex align-items-center justify-content-center"
+          >
+            <img src="./images/icons/chevron-left.svg" alt="" />
+            Back
+          </a>
+        </div>
+
+        <!-- Edit User Form Starting -->
+        <div class="form_container">
+          <form action="">
+            <div class="row">
+              <div class="form-floating col-md-6 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  placeholder="John"
+                  value="John"
+                />
+                <label for="firstName">First Name</label>
+              </div>
+              <div class="form-floating col-md-6 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  placeholder="Doe"
+                  value="Wick"
+                />
+                <label for="lastName">Last Name</label>
+              </div>
+              <div class="form-floating col-md-6 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  placeholder="john123"
+                  value="john234"
+                />
+                <label for="username">User Name</label>
+              </div>
+              <div class="form-floating col-md-6 mb-3">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  id="role"
+                >
+                  <option>Select Role</option>
+                  <option value="Account">Account</option>
+                  <option value="Admin">Admin</option>
+                  <option selected value="Cheff">Cheff</option>
+                </select>
+                <label for="role">Role</label>
+              </div>
+              <div class="form-floating col-md-6 mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="john123@gmail.com"
+                  value="johnwick@yopmail.com"
+                  disabled
+                />
+                <label for="email">Email</label>
+              </div>
+              <div class="form-floating col-md-6 mb-3 position-relative">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  id="role"
+                >
+                  <option>Select Status</option>
+                  <option selected value="Active">Active</option>
+                  <option value="InActive">InAcative</option>
+                </select>
+                <label for="role">Role</label>
+              </div>
+              <div
+                class="browse_file col-12 mb-3 d-flex justify-content-center"
+              >
+                <input type="file" id="file" class="" />
+                <label
+                  for="file"
+                  class="browse_file_label d-flex flex-column align-items-center justify-content-center"
+                >
+                  <img
+                    src="./images/icons/cloud-arrow-up.svg"
+                    alt=""
+                    width="20px"
+                  />
+                  <p class="m-0">Browse File</p>
+                </label>
+              </div>
+              <div class="form-floating col-md-6 col-lg-4 mb-3">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  id="country"
+                >
+                  <option>Select Country</option>
+                  <option selected value="India">India</option>
+                  <option value="USA">USA</option>
+                  <option value="Australia">Australia</option>
+                </select>
+                <label for="country">Country</label>
+              </div>
+              <div class="form-floating col-md-6 col-lg-4 mb-3">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  id="state"
+                >
+                  <option>Select State</option>
+                  <option selected value="Gujarat">Gujarat</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="UP">UP</option>
+                </select>
+                <label for="state">State</label>
+              </div>
+              <div class="form-floating col-md-6 col-lg-4 mb-3">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  id="city"
+                >
+                  <option>Select City</option>
+                  <option selected value="Dwarka">Dwarka</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Jamnagar">Jamnagar</option>
+                </select>
+                <label for="city">City</label>
+              </div>
+              <div class="form-floating col-md-6 col-lg-4 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="zipcode"
+                  placeholder=""
+                  value="321456"
+                />
+                <label for="zipcode">Zipcode</label>
+              </div>
+              <div class="form-floating col-md-6 col-lg-4 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  placeholder=""
+                  value="Bhanvad"
+                />
+                <label for="address">Address</label>
+              </div>
+              <div class="form-floating col-md-6 col-lg-4 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  placeholder="9879898798"
+                  value="9879898798"
+                />
+                <label for="phone">Phone</label>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <button class="btn create_user_btn">Update User</button>
+            <button class="btn cancle_btn">Cancel</button>
+          </form>
+        </div>
+      </div>

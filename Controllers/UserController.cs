@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,14 @@ namespace PizzashopMVCProject.Controllers
     {
         private readonly PizzashopDbContext _context;
         private readonly JwtService _JwtService;
+        private readonly EncryptionService _encrypt;
 
 
-        public UserController(PizzashopDbContext context, JwtService JwtService)
+        public UserController(PizzashopDbContext context, JwtService JwtService, EncryptionService encrypt)
         {
             _context = context;
             _JwtService = JwtService;
+            _encrypt = encrypt;
         }
         public IActionResult Index()
         {
@@ -51,6 +54,7 @@ namespace PizzashopMVCProject.Controllers
                             )
                         select new UserListViewModel
                         {
+                            UserId = u.Id,
                             FirstName = u.Firstname,
                             LastName = u.Lastname,
                             Email = u.Email,
@@ -73,19 +77,96 @@ namespace PizzashopMVCProject.Controllers
 
 
         // Add User Page 
-        // [HttpGet]
-        // public IActionResult AddUser()
-        // {
-        //     var token = Request.Cookies["SuperSecretAuthToken"];
-        //     var userName = _JwtService.GetClaimValue(token, "userName");
-        //     var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
+        [HttpGet]
+        public IActionResult AddUser()
+        {
+            var token = Request.Cookies["SuperSecretAuthToken"];
+            var userName = _JwtService.GetClaimValue(token, "userName");
+            var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
+            var email = _JwtService.GetClaimValue(token, "email");
 
-        //     ViewData["UserName"] = userName;
-        //     ViewData["ImgUrl"] = imgUrl;
+            var user = _context.Users.Where(u => u.Email == email).Select(u => new {u.Id}).FirstOrDefault();
+
+            ViewData["UserName"] = userName;
+            ViewData["ImgUrl"] = imgUrl;
+            ViewData["userId"] = user.Id;
             
 
-        //     ViewData["ActiveLink"] = "Users";
-        //     return View();
-        // }
+            // ViewData["ActiveLink"] = "Users";
+            return View();
+        }
+
+        public async Task<IActionResult> AddUser(AddUserViewModel model)
+        {
+            var token = Request.Cookies["SuperSecretAuthToken"];
+            var email = _JwtService.GetClaimValue(token, "email");
+
+            if(ModelState.IsValid){
+                var user = _context.Users.Where(u => u.Email == email).Select(u => new {u.Id}).FirstOrDefault();
+
+                // if model state are valid
+                var newUser = new User{
+                    Firstname = model.FirstName,
+                    Lastname = model.LastName,
+                    Username = model.UserName,
+                    Password = _encrypt.EncryptPassword(model.Password),
+                    Email = model.Email,
+                    Roleid = model.RoleId,
+                    Countryid = model.CountryId,
+                    Stateid = model.StateId,
+                    Cityid = model.CityId,
+                    Address = model.Address,
+                    Zipcode = model.Zipcode,
+                    Phone = model.Phone,
+                    CreatedBy = user.Id
+                };
+
+                // Handle Image Upload
+                if (model.ProfileImage != null)
+                {
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    string fileName = $"{Guid.NewGuid()}_{model.ProfileImage.FileName}";
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.ProfileImage.CopyToAsync(fileStream);
+                    }
+
+                    newUser.Imgurl = $"/uploads/{fileName}"; // Store relative path in DB
+                }
+
+
+                // Add user to the Databse
+                await _context.Users.AddAsync(newUser);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "User Added successfully!";
+                return RedirectToAction("AddUser", "User");
+            }
+            TempData["SuccessMessage"] = "Error Adding User!";
+            return View(model);
+        }
+
+
+        // Edit User Action
+        public async Task<IActionResult> EditUser(long userId){
+
+            var token = Request.Cookies["SuperSecretAuthToken"];
+
+            var userName = _JwtService.GetClaimValue(token, "userName");
+            var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
+
+            var user = await _context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            
+
+            ViewData["UserName"] = userName;
+            ViewData["ImgUrl"] = imgUrl;
+            return View();
+        }
     }
 }
