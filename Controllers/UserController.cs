@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,58 +20,72 @@ namespace PizzashopMVCProject.Controllers
             _context = context;
             _JwtService = JwtService;
         }
-        public async Task<IActionResult> Index(int pageNo = 1, int pageSize = 3)
+        public IActionResult Index()
         {
+            var token = Request.Cookies["SuperSecretAuthToken"];
+            var userName = _JwtService.GetClaimValue(token, "userName");
+            var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
 
-            // var query = from u in _context.Users
-            //             join r in _context.Roles on u.Roleid equals r.RoleId
-            //             where u.Isdeleted == false
-            //             select new UserListViewModel
-            //             {
-            //                 UserName = u.Username,
-            //                 Email = u.Email,
-            //                 Phone = u.Phone,
-            //                 Status = u.Status,
-            //                 RoleName = r.Rolename
-            //             };
-
-
-            // // var query = _context.Users.Where(u=>u.Status == false);
-
-
-            // int totalRecords = await query.CountAsync();
-
-            // var users = await query.OrderBy(u => u.UserName).Skip((pageNo - 1) * pageSize).Take(pageSize).ToListAsync();
-
-            // var model = new PaginationViewModel()
-            // {
-            //     UserList = users,
-            //     PageNo = pageNo,
-            //     PageSize = pageSize,
-            //     TotalRecords = totalRecords,
-            //     TotalPages = (totalRecords + pageSize - 1) / pageSize
-            // };
+            ViewData["UserName"] = userName;
+            ViewData["ImgUrl"] = imgUrl;
+            
 
             ViewData["ActiveLink"] = "Users";
             return View();
         }
 
-        public JsonResult GetUserList(int pageNo, int pageSize)
+        public IActionResult GetUserList(int pageNo = 1, int pageSize = 3, string search = "")
         {
+            // var token = Request.Cookies["SuperSecretAuthToken"];
+
+           
+
             var query = from u in _context.Users
                         join r in _context.Roles on u.Roleid equals r.RoleId
-                        where u.Isdeleted == false
+                        where u.Isdeleted == false &&
+                            (string.IsNullOrEmpty(search) ||
+                            EF.Functions.ILike(u.Firstname, $"%{search}%") ||
+                            EF.Functions.ILike(u.Lastname, $"%{search}%") ||
+                            EF.Functions.ILike(u.Email, $"%{search}%") ||
+                            EF.Functions.ILike(r.Rolename, $"%{search}%")
+                            )
                         select new UserListViewModel
                         {
-                            UserName = u.Username,
+                            FirstName = u.Firstname,
+                            LastName = u.Lastname,
                             Email = u.Email,
                             Phone = u.Phone,
                             Status = u.Status,
-                            RoleName = r.Rolename
+                            RoleName = r.Rolename,
+                            ImgUrl = u.Imgurl
                         };
-            var users =  query.OrderBy(u => u.UserName).Skip((pageNo - 1) * pageSize).Take(pageSize);
-            var userJson = new JsonResult(users);
-            return userJson;
+
+                var totalRecords = query.Count();
+                var users = query.OrderBy(u => u.FirstName)
+                            .Skip((pageNo - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToList();
+
+            return Json(new { users, totalRecords });
         }
+
+
+
+
+        // Add User Page 
+        // [HttpGet]
+        // public IActionResult AddUser()
+        // {
+        //     var token = Request.Cookies["SuperSecretAuthToken"];
+        //     var userName = _JwtService.GetClaimValue(token, "userName");
+        //     var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
+
+        //     ViewData["UserName"] = userName;
+        //     ViewData["ImgUrl"] = imgUrl;
+            
+
+        //     ViewData["ActiveLink"] = "Users";
+        //     return View();
+        // }
     }
 }

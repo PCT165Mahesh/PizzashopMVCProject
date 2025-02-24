@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace PizzashopMVCProject.Models;
@@ -84,7 +83,6 @@ public partial class PizzashopDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
         modelBuilder.Entity<Booktable>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("booktable_pkey");
@@ -214,7 +212,9 @@ public partial class PizzashopDbContext : DbContext
             entity.Property(e => e.Persons)
                 .HasDefaultValueSql("1")
                 .HasColumnName("persons");
-            entity.Property(e => e.Phone).HasColumnName("phone");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(15)
+                .HasColumnName("phone");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updated_at");
@@ -1017,7 +1017,9 @@ public partial class PizzashopDbContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password");
-            entity.Property(e => e.Phone).HasColumnName("phone");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(15)
+                .HasColumnName("phone");
             entity.Property(e => e.Roleid).HasColumnName("roleid");
             entity.Property(e => e.Stateid).HasColumnName("stateid");
             entity.Property(e => e.Status).HasColumnName("status");

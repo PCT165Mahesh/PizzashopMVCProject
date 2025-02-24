@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 
 namespace PizzashopMVCProject.Models;
 
@@ -34,7 +33,7 @@ public partial class User
 
     public int Zipcode { get; set; }
 
-    public int Phone { get; set; }
+    public string Phone { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; }
 

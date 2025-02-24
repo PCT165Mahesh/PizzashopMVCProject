@@ -19,7 +19,7 @@
                 <label for="search" class="search_icon"><img src="~/images/icons/search.svg" alt="" /></label>
             </form>
             <button type="button" class="btn add_user_btn">
-                <a href="./add_user.html" class="text-white text-decoration-none">+Add User</a>
+                <a asp-action="AddUser" asp-controller="User" class="text-white text-decoration-none">+Add User</a>
             </button>
         </div>
         <!-- Search box and button Ends -->
@@ -57,41 +57,13 @@
             </thead>
             <tbody id="userListBody">
 
-                @* @foreach (var user in Model.UserList)
-                {
-                    <tr>
-                        <td class="user_profile">
-                            <img src="~/images/Default_pfp.svg.png" alt="" />
-                            <span>@user.UserName</span>
-                        </td>
-                        <td>@user.Email</td>
-                        <td>@user.Phone</td>
-                        <td>@user.RoleName</td>
-                        <td>
-                            @if (user.Status)
-                            {
-                                <div class="status active_status">Active</div>
-                            }
-                            else
-                            {
-                                <div class="status inactive_status">Inactive</div>
-                            }
-                        </td>
-                        <td>
-                            <a class="btn user_action" href="./edit_user.html">
-                                <img src="~/images/icons/edit-pen.svg" alt="" />
-                            </a>
-                            <button class="btn user_action" type="button" data-bs-toggle="modal" data-bs-target="#myModal">
-                                <img src="~/images/icons/delete-trash-icon.svg" alt="" />
-                            </button>
-                        </td>
-                    </tr>
-                } *@
+
             </tbody>
         </table>
         <!-- Paggination Frontend Start -->
-        <div class="d-flex flex-row align-items-center justify-content-end pagination_container">
-            <span>Items per page:</span>
+        <div class="d-flex flex-sm-row flex-column align-items-center justify-content-end pagination_container">
+            <div class="d-flex flex-row align-items-center">
+                <span>Items per page:</span>
 
             <!-- Page  Numbers Drop Down -->
             <select class="form-select w-auto" aria-label="Default select example" id="selectPageSize">
@@ -100,18 +72,21 @@
                 <option value="10">10</option>
                 <option value="15">15</option>
             </select>
+            </div>
 
-            <span style="margin-left: 8px">
+            <span style="margin-left: 8px" class="pagination_details">
                 @* Showing @((Model.PageNo - 1) * Model.PageSize + 1) - @(Math.Min(Model.PageNo * Model.PageSize,
                 Model.TotalRecords)) of @Model.TotalRecords *@
             </span>
 
-            <button type="button" class="btn border border-black prev_page" id="prevPageIcon">
+            <div>
+                <button type="button" class="btn border border-black prev_page" id="prevPageIcon">
                 <img src="~/images/icons/chevron-left.svg" alt="" />
             </button>
             <button type="button" class="btn border border-black" id="nextPageIcon">
                 <img src="~/images/icons/chevron-right.svg" alt="" />
             </button>
+            </div>
         </div>
         <!-- Pagination Frontend Ends -->
     </div>
@@ -145,201 +120,105 @@
 
 
 @section Scripts {
-    <script>
-        var pageNo = 1;
+   
+   <script>
+    $(document).ready(function () {
+    var pageNo = 1; // Current page number
+    var pageSize = $("#selectPageSize").val(); // Default page size
+    var totalRecords = 0; // Total records placeholder
+    var debounceTimer; // Timer for debounce
 
-        $(document).ready(function () {
-            pageNo = 1;
-            $.ajax({
-                url: '@Url.Action("GetUserList", "User")',
-                type: "GET",
-                data: { pageNo: pageNo, pageSize: $("#selectPageSize").val() },
-                success: function (users) {
-                    @* console.log("Page pageSize select"); *@
+    function loadUsers(pageNo, pageSize, searchQuery = "") {
+        $.ajax({
+            url: '@Url.Action("GetUserList", "User")',
+            type: "GET",
+            data: { pageNo: pageNo, pageSize: pageSize, search: searchQuery },
+            success: function (response) {
+                var users = response.users;
+                totalRecords = response.totalRecords;
+                $("#userListBody").empty();
+
+                if (users.length === 0) {
+                    $("#userListBody").append('<tr><td colspan="6" class="text-center">No users found</td></tr>');
+                } else {
                     console.log(users);
                     $.each(users, function (index, user) {
                         $("#userListBody").append(`
                             <tr>
                                 <td>
-                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
-                                    ${user.userName}
+                                    <img src="${user.imgUrl ? user.imgUrl : '/images/Default_pfp.svg.png'}" 
+                                        alt="User Image"class="rounded-circle" width="25px">
+                                    ${user.firstName} ${user.lastName}
                                 </td>
                                 <td>${user.email}</td>
                                 <td>${user.phone}</td>
                                 <td>${user.roleName}</td>
                                 <td>
-                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
-
+                                    ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
                                 </td>
                                 <td>
-                                    <a class="btn user_action" href="./edit_user.html">
+                                    <a class="btn user_action" href="@Url.Action("EditUser", "User")?id=${user.id}">
                                         <img src="/images/icons/edit-pen.svg" alt="" />
                                     </a>
-                                    <button
-                                        class="btn user_action"
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#myModal"
-                                    >
+                                    <button class="btn user_action user_action_delete" data-id="${user.id}" data-bs-toggle="modal" data-bs-target="#myModal">
                                         <img src="/images/icons/delete-trash-icon.svg" alt="" />
                                     </button>
                                 </td>
                             </tr>
                         `);
                     });
-                },
-                error: function () {
-                    console.error(users);
-                    alert("Error loading users");
                 }
-            });
-        })
 
-        $("#selectPageSize").change(function () {
-            console.log("H");
+                // Update pagination info
+                $(".pagination_details").text(
+                    `Showing ${(pageNo - 1) * pageSize + 1} - ${Math.min(pageNo * pageSize, totalRecords)} of ${totalRecords}`
+                );
 
-            var pageSize = $(this).val();
-            $.ajax({
-                url: '@Url.Action("GetUserList", "User")',
-                type: "GET",
-                data: { pageNo: 1, pageSize: pageSize },
-                success: function (users) {
-                    $("#userListBody").empty();
-                    console.log(users);
-                    $.each(users, function (index, user) {
+                // Disable pagination buttons when needed
+                $("#prevPageIcon").prop("disabled", pageNo === 1);
+                $("#nextPageIcon").prop("disabled", pageNo * pageSize >= totalRecords);
+            },
+            error: function () {
+                alert("Error loading users");
+            }
+        });
+    }
 
-                        $("#userListBody").append(`
-                            <tr>
-                                <td>
-                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
-                                    ${user.userName}
-                                </td>
-                                <td>${user.email}</td>
-                                <td>${user.phone}</td>
-                                <td>${user.roleName}</td>
-                                <td>
-                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
+    // Search with debounce to prevent too many API calls
+    $("#search").on("input", function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+            pageNo = 1; // Reset to first page on search
+            loadUsers(pageNo, $("#selectPageSize").val(), $("#search").val());
+        }, 300); // 300ms delay for debounce
+    });
 
-                                </td>
-                                <td>
-                                    <a class="btn user_action" href="./edit_user.html">
-                                        <img src="/images/icons/edit-pen.svg" alt="" />
-                                    </a>
-                                    <button
-                                        class="btn user_action"
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#myModal"
-                                    >
-                                        <img src="/images/icons/delete-trash-icon.svg" alt="" />
-                                    </button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                },
-                error: function () {
-                    console.error(users);
-                    alert("Error loading users");
-                }
-            });
-        })
+    // Page size change event
+    $("#selectPageSize").change(function () {
+        pageSize = $(this).val();
+        pageNo = 1; // Reset to first page when changing page size
+        loadUsers(pageNo, pageSize, $("#search").val());
+    });
 
-        $("#nextPageIcon").click(function () {
-            console.log("H");
-
-            var pageSize = $("#selectPageSize").val();
+    // Next page event
+    $("#nextPageIcon").click(function () {
+        if (pageNo * pageSize < totalRecords) {
             pageNo++;
-            $.ajax({
-                url: '@Url.Action("GetUserList", "User")',
-                type: "GET",
-                data: { pageNo: pageNo, pageSize: pageSize },
-                success: function (users) {
-                    $("#userListBody").empty();
-                    $.each(users, function (index, user) {
-                        $("#userListBody").append(`
-                            <tr>
-                                <td>
-                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
-                                    ${user.userName}
-                                </td>
-                                <td>${user.email}</td>
-                                <td>${user.phone}</td>
-                                <td>${user.roleName}</td>
-                                <td>
-                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
+            loadUsers(pageNo, pageSize, $("#search").val());
+        }
+    });
 
-                                </td>
-                                <td>
-                                    <a class="btn user_action" href="./edit_user.html">
-                                        <img src="/images/icons/edit-pen.svg" alt="" />
-                                    </a>
-                                    <button
-                                        class="btn user_action"
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#myModal"
-                                    >
-                                        <img src="/images/icons/delete-trash-icon.svg" alt="" />
-                                    </button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                },
-                error: function () {
-                    console.error(users);
-                    alert("Error loading users");
-                }
-            });
-        })
-
-        $("#prevPageIcon").click(function () {
-            console.log("H");
-            var pageSize = $("#selectPageSize").val();
+    // Previous page event
+    $("#prevPageIcon").click(function () {
+        if (pageNo > 1) {
             pageNo--;
-            $.ajax({
-                url: '@Url.Action("GetUserList", "User")',
-                type: "GET",
-                data: { pageNo: pageNo, pageSize: pageSize },
-                success: function (users) {
-                    $("#userListBody").empty();
-                    $.each(users, function (index, user) {
-                        $("#userListBody").append(`
-                            <tr>
-                                <td>
-                                    <img src="/images/Default_pfp.svg.png" alt="" width="25px">
-                                    @* ${user.userName} *@
-                                </td>
-                                <td>${user.email}</td>
-                                <td>${user.phone}</td>
-                                <td>${user.roleName}</td>
-                                <td>
-                                ${user.status ? '<div class="status active_status">Active</div>' : '<div class="status inactive_status">Inactive</div>'}
+            loadUsers(pageNo, pageSize, $("#search").val());
+        }
+    });
 
-                                </td>
-                                <td>
-                                    <a class="btn user_action" href="./edit_user.html">
-                                        <img src="/images/icons/edit-pen.svg" alt="" />
-                                    </a>
-                                    <button
-                                        class="btn user_action"
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#myModal"
-                                    >
-                                        <img src="/images/icons/delete-trash-icon.svg" alt="" />
-                                    </button>
-                                </td>
-                            </tr>
-                         `);
-                    });
-                },
-                error: function () {
-                    console.error(users);
-                    alert("Error loading users");
-                }
-            });
-        })
-    </script>
+    // Load users initially
+    loadUsers(pageNo, pageSize);
+});
+
+   </script>
 }

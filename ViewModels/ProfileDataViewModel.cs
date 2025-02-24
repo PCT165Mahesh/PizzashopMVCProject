@@ -9,7 +9,7 @@ public class ProfileDataViewModel
     public string firstName { get; set; }
     public string lastName { get; set; }
     public string userName { get; set; }
-    public int phoneNo { get; set; }
+    public string phoneNo { get; set; }
     public int zipcode { get; set; }
     public string address { get; set; }
 
