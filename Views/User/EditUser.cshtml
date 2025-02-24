@@ -1,4 +1,5 @@
-﻿@{
+﻿@model PizzashopMVCProject.ViewModels.EditUserViewModel
+@{
     ViewData["Title"] = "Edit User Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -27,30 +28,30 @@
               <div class="form-floating col-md-6 mb-3">
                 <input
                   type="text"
+                  asp-for="@Model.FirstName"
                   class="form-control"
                   id="firstName"
                   placeholder="John"
-                  value="John"
                 />
                 <label for="firstName">First Name</label>
               </div>
               <div class="form-floating col-md-6 mb-3">
                 <input
                   type="text"
+                  asp-for="@Model.LastName"
                   class="form-control"
                   id="lastName"
                   placeholder="Doe"
-                  value="Wick"
                 />
                 <label for="lastName">Last Name</label>
               </div>
               <div class="form-floating col-md-6 mb-3">
                 <input
                   type="text"
+                  asp-for="@Model.UserName"
                   class="form-control"
                   id="username"
                   placeholder="john123"
-                  value="john234"
                 />
                 <label for="username">User Name</label>
               </div>
@@ -61,19 +62,16 @@
                   id="role"
                 >
                   <option>Select Role</option>
-                  <option value="Account">Account</option>
-                  <option value="Admin">Admin</option>
-                  <option selected value="Cheff">Cheff</option>
                 </select>
                 <label for="role">Role</label>
               </div>
               <div class="form-floating col-md-6 mb-3">
                 <input
                   type="email"
+                  asp-for="@Model.Email"
                   class="form-control"
                   id="email"
                   placeholder="john123@gmail.com"
-                  value="johnwick@yopmail.com"
                   disabled
                 />
                 <label for="email">Email</label>
@@ -88,12 +86,12 @@
                   <option selected value="Active">Active</option>
                   <option value="InActive">InAcative</option>
                 </select>
-                <label for="role">Role</label>
+                <label for="role">Status</label>
               </div>
               <div
                 class="browse_file col-12 mb-3 d-flex justify-content-center"
               >
-                <input type="file" id="file" class="" />
+                <input type="file" id="file" class="" asp-for="@Model.ProfileImage" />
                 <label
                   for="file"
                   class="browse_file_label d-flex flex-column align-items-center justify-content-center"
@@ -112,11 +110,11 @@
                   aria-label="Default select example"
                   id="country"
                 >
-                  <option>Select Country</option>
-                  <option selected value="India">India</option>
-                  <option value="USA">USA</option>
-                  <option value="Australia">Australia</option>
+                
+                @* <option value="">Select Country</option> *@
+                <option value="@Model.CountryId">@Model.Country</option>
                 </select>
+                
                 <label for="country">Country</label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
@@ -125,10 +123,7 @@
                   aria-label="Default select example"
                   id="state"
                 >
-                  <option>Select State</option>
-                  <option selected value="Gujarat">Gujarat</option>
-                  <option value="Rajasthan">Rajasthan</option>
-                  <option value="UP">UP</option>
+                <option value="@Model.StateId">@Model.State</option>
                 </select>
                 <label for="state">State</label>
               </div>
@@ -138,40 +133,37 @@
                   aria-label="Default select example"
                   id="city"
                 >
-                  <option>Select City</option>
-                  <option selected value="Dwarka">Dwarka</option>
-                  <option value="Ahmedabad">Ahmedabad</option>
-                  <option value="Jamnagar">Jamnagar</option>
+                <option value="@Model.CityId">@Model.City</option>
                 </select>
                 <label for="city">City</label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
                 <input
                   type="text"
+                  asp-for="@Model.Zipcode"
                   class="form-control"
                   id="zipcode"
                   placeholder=""
-                  value="321456"
                 />
                 <label for="zipcode">Zipcode</label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
                 <input
                   type="text"
+                  asp-for="@Model.Address"
                   class="form-control"
                   id="address"
                   placeholder=""
-                  value="Bhanvad"
                 />
                 <label for="address">Address</label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
                 <input
                   type="text"
+                  asp-for="@Model.Phone"
                   class="form-control"
                   id="phone"
                   placeholder="9879898798"
-                  value="9879898798"
                 />
                 <label for="phone">Phone</label>
               </div>
@@ -183,3 +175,88 @@
           </form>
         </div>
       </div>
+
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+              // Populate Role into select when page Loads
+            $.ajax({
+                url: '@Url.Action("GetRoles", "Dashboard")',
+                type: "GET",
+                success: function (roles) {
+                    $.each(roles, function (index, role) {
+                        $("#role").append('<option value="' + role.roleId + '">' + role.rolename + '</option>');
+                    });
+                },
+                error: function () {
+                    console("Error loading Roles");
+                }
+            });
+
+            // Populate Countries into select when page Loads
+            $.ajax({
+                url: '@Url.Action("GetCountries", "Dashboard")',
+                type: "GET",
+                success: function (countries) {
+                    $("#state").empty().append('<option value="">Select State</option>');
+                    $("#city").empty().append('<option value="">Select City</option>');
+                    $.each(countries, function (index, country) {
+                        $("#country").append('<option value="' + country.countryId + '">' + country.name + '</option>');
+                    });
+                },
+                error: function () {
+                    console("Error loading Countries");
+                }
+            });
+
+
+            // Load States when a Country is selected
+            $('#country').change(function () {
+                var countryId = $(this).val();
+                $('#state').empty().append('<option value="" selected>Select State</option>');
+                $('#city').empty().append('<option value="" selected>Select City</option>');
+
+                if (countryId) {
+                    $.ajax({
+                        url: '@Url.Action("GetStatesByCountry", "Dashboard")',
+                        type: 'GET',
+                        data: { countryId: countryId },
+                        success: function (data) {
+                            $.each(data, function (index, item) {
+                                $('#state').append($('<option>', {
+                                    value: item.stateId,
+                                    text: item.name
+                                }));
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Load Cities when a State is selected
+            $('#state').change(function () {
+                var stateId = $(this).val();
+                $('#city').empty().append('<option value="" selected>Select City</option>');
+
+                if (stateId) {
+                    $.ajax({
+                        url: '@Url.Action("GetCitiesByState", "Dashboard")',
+                        type: 'GET',
+                        data: { id: stateId },
+                        success: function (data) {
+                            $.each(data, function (index, item) {
+                                $('#city').append($('<option>', {
+                                    value: item.cityId,
+                                    text: item.name
+                                }));
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

@@ -25,6 +25,7 @@ public class ProfileDataViewModel
     public long CityId { get; set; }
 
 
+
     public List<Country> Countries { get; set; } = new List<Country>();
     public List<State> States { get; set; } = new List<State>();
     public List<City> Cities { get; set; } = new List<City>();

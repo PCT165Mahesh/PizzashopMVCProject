@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PizzashopMVCProject.Models;
 using PizzashopMVCProject.Utilty;
 using PizzashopMVCProject.ViewModels;
@@ -154,19 +155,38 @@ namespace PizzashopMVCProject.Controllers
 
 
         // Edit User Action
-        public async Task<IActionResult> EditUser(long userId){
+        [HttpGet]
+        public async Task<IActionResult> EditUser(long id){
 
             var token = Request.Cookies["SuperSecretAuthToken"];
 
             var userName = _JwtService.GetClaimValue(token, "userName");
             var imgUrl = _JwtService.GetClaimValue(token, "imgUrl");
 
-            var user = await _context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
-            
+            var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+
+            EditUserViewModel model = new EditUserViewModel();
+            if(user != null){
+                model.FirstName = user.Firstname;
+                model.LastName = user.Lastname;
+                model.UserName = user.Username;
+                model.RoleId = user.Roleid;
+                model.Email = user.Email;
+                model.Status = user.Status;
+                model.CountryId = user.Countryid;
+                model.StateId = user.Stateid;
+                model.CityId = user.Cityid;
+                model.Phone = user.Phone;
+                model.Address = user.Address;
+                model.Zipcode = user.Zipcode;
+                model.Country = _context.Countries.Where(u=>u.CountryId == user.Countryid).FirstOrDefault().Name;
+                model.State = _context.States.Where(u=>u.StateId == user.Stateid).FirstOrDefault().Name;
+                model.City = _context.Cities.Where(u=>u.CityId == user.Cityid).FirstOrDefault().Name;
+            }
 
             ViewData["UserName"] = userName;
             ViewData["ImgUrl"] = imgUrl;
-            return View();
+            return View(model);
         }
     }
 }
