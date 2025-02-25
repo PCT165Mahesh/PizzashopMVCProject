@@ -13,7 +13,7 @@
             <span>Add New User</span>
         </div>
         <!-- Back Button -->
-        <a href="./user_list.html" class="btn back_btn d-flex align-items-center justify-content-center">
+        <a asp-action="Index" asp-controller="User" class="btn back_btn d-flex align-items-center justify-content-center">
             <img src="~/images/icons/chevron-left.svg" alt="" />
             Back
         </a>
@@ -22,6 +22,7 @@
     <!-- Edit User Form Starting -->
     <div class="form_container">
         <form id="addUserForm" asp-action="AddUser" asp-controller="User" method="post" enctype="multipart/form-data">
+        
             <div class="row">
                 <div class="form-floating col-md-6 mb-3">
                     <input asp-for="@Model.FirstName" type="text" class="form-control" id="firstName" placeholder="John" />
@@ -101,6 +102,35 @@
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+        $(document).ready(function () {
+
+            toastr.options = {
+                "closeButton": true,  // Adds a close button
+                "progressBar": true,  // Shows a progress bar
+                "positionClass": "toast-top-right",  // Position of toast
+                "timeOut": "5000",  // Auto-close after 5 seconds
+                "extendedTimeOut": "2000",  // Extra time if hovered
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "iconClass": ""  // Removes the icon class
+            };
+            var successMessage = '@(TempData["SuccessMessage"])';
+            var errorMessage = '@(TempData["ErrorMessage"])';
+
+            console.log("success message :-",successMessage);
+
+            if (successMessage && successMessage.trim() !== "") {
+                toastr.success(successMessage);
+            }
+
+            if (errorMessage && errorMessage.trim() !== "") {
+                toastr.error(errorMessage);
+            }
+        });
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -318,29 +348,5 @@
         });
     </script>
 
-     <script>
-        $(document).ready(function () {
-
-            toastr.options = {
-                "closeButton": true,  // Adds a close button
-                "progressBar": true,  // Shows a progress bar
-                "positionClass": "toast-top-right",  // Position of toast
-                "timeOut": "5000",  // Auto-close after 5 seconds
-                "extendedTimeOut": "2000",  // Extra time if hovered
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut",
-                "iconClass": ""  // Removes the icon class
-            };
-            var successMessage = '@(TempData["SuccessMessage"] ?? "")';
-            var errorMessage = '@(TempData["ErrorMessage"] ?? "")';
-
-            if (successMessage && successMessage.trim() !== "") {
-                toastr.success(successMessage);
-            }
-
-            if (errorMessage && errorMessage.trim() !== "") {
-                toastr.error(errorMessage);
-            }
-        });
-    </script>
+     
 }

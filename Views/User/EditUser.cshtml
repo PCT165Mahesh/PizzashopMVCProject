@@ -16,14 +16,15 @@
             href="./user_list.html"
             class="btn back_btn d-flex align-items-center justify-content-center"
           >
-            <img src="./images/icons/chevron-left.svg" alt="" />
+            <img src="~/images/icons/chevron-left.svg" alt="" />
             Back
           </a>
         </div>
 
         <!-- Edit User Form Starting -->
         <div class="form_container">
-          <form action="">
+          <form method="post" id="editUserForm" asp-action="EditUser" asp-controller="User" enctype="multipart/form-data">
+            <input type="hidden" id="" asp-for="@Model.UserId" value="@Model.UserId">
             <div class="row">
               <div class="form-floating col-md-6 mb-3">
                 <input
@@ -56,12 +57,12 @@
                 <label for="username">User Name</label>
               </div>
               <div class="form-floating col-md-6 mb-3">
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  id="role"
-                >
-                  <option>Select Role</option>
+                <select asp-for="RoleId" class="form-select" id="roles">
+                    <option value="">Select Role</option>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <option value="@role.RoleId">@role.Rolename</option>
+                    }
                 </select>
                 <label for="role">Role</label>
               </div>
@@ -72,20 +73,16 @@
                   class="form-control"
                   id="email"
                   placeholder="john123@gmail.com"
-                  disabled
                 />
                 <label for="email">Email</label>
               </div>
               <div class="form-floating col-md-6 mb-3 position-relative">
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  id="role"
-                >
-                  <option>Select Status</option>
-                  <option selected value="Active">Active</option>
-                  <option value="InActive">InAcative</option>
-                </select>
+                <select class="form-select" aria-label="Default select example" id="status" name="status">
+                  <option value="true" selected="@(Model.Status)">Active</option>
+                  <option value="false" selected="@(!Model.Status)">Inactive</option>
+
+              </select>
+
                 <label for="role">Status</label>
               </div>
               <div
@@ -97,7 +94,7 @@
                   class="browse_file_label d-flex flex-column align-items-center justify-content-center"
                 >
                   <img
-                    src="./images/icons/cloud-arrow-up.svg"
+                    src="~/images/icons/cloud-arrow-up.svg"
                     alt=""
                     width="20px"
                   />
@@ -105,36 +102,34 @@
                 </label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  id="country"
-                >
-                
-                @* <option value="">Select Country</option> *@
-                <option value="@Model.CountryId">@Model.Country</option>
-                </select>
+                <select asp-for="CountryId" class="form-select" id="country">
+                        <option value="">Select Country</option>
+                        @foreach (var country in Model.Countries)
+                        {
+                            <option value="@country.CountryId">@country.Name</option>
+                        }
+                  </select>
                 
                 <label for="country">Country</label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  id="state"
-                >
-                <option value="@Model.StateId">@Model.State</option>
-                </select>
+                <select asp-for="StateId" class="form-select" id="state">
+                        <option value="">Select State</option>
+                        @foreach (var state in Model.States)
+                        {
+                            <option value="@state.StateId">@state.Name</option>
+                        }
+                    </select>
                 <label for="state">State</label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  id="city"
-                >
-                <option value="@Model.CityId">@Model.City</option>
-                </select>
+                <select asp-for="CityId" class="form-select" id="city">
+                        <option value="">Select City</option>
+                        @foreach (var city in Model.Cities)
+                        {
+                            <option value="@city.CityId">@city.Name</option>
+                        }
+                    </select>
                 <label for="city">City</label>
               </div>
               <div class="form-floating col-md-6 col-lg-4 mb-3">
@@ -179,84 +174,135 @@
 
 @section Scripts{
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
         $(document).ready(function () {
-              // Populate Role into select when page Loads
-            $.ajax({
-                url: '@Url.Action("GetRoles", "Dashboard")',
-                type: "GET",
-                success: function (roles) {
-                    $.each(roles, function (index, role) {
-                        $("#role").append('<option value="' + role.roleId + '">' + role.rolename + '</option>');
-                    });
-                },
-                error: function () {
-                    console("Error loading Roles");
-                }
-            });
 
-            // Populate Countries into select when page Loads
-            $.ajax({
-                url: '@Url.Action("GetCountries", "Dashboard")',
-                type: "GET",
-                success: function (countries) {
-                    $("#state").empty().append('<option value="">Select State</option>');
-                    $("#city").empty().append('<option value="">Select City</option>');
-                    $.each(countries, function (index, country) {
-                        $("#country").append('<option value="' + country.countryId + '">' + country.name + '</option>');
-                    });
-                },
-                error: function () {
-                    console("Error loading Countries");
-                }
-            });
+            toastr.options = {
+                "closeButton": true,  // Adds a close button
+                "progressBar": true,  // Shows a progress bar
+                "positionClass": "toast-top-right",  // Position of toast
+                "timeOut": "5000",  // Auto-close after 5 seconds
+                "extendedTimeOut": "2000",  // Extra time if hovered
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "iconClass": ""  // Removes the icon class
+            };
+            var successMessage = '@(TempData["SuccessMessage"])';
+            var errorMessage = '@(TempData["ErrorMessage"])';
 
+            console.log("success message :-",successMessage);
 
-            // Load States when a Country is selected
-            $('#country').change(function () {
+            if (successMessage && successMessage.trim() !== "") {
+                toastr.success(successMessage);
+            }
+
+            if (errorMessage && errorMessage.trim() !== "") {
+                toastr.error(errorMessage);
+            }
+        });
+    </script>
+    <script>
+      $(document).ready(function (){
+        // Country -> State Dropdown Update
+            $("#country").change(function () {
                 var countryId = $(this).val();
-                $('#state').empty().append('<option value="" selected>Select State</option>');
-                $('#city').empty().append('<option value="" selected>Select City</option>');
-
                 if (countryId) {
                     $.ajax({
                         url: '@Url.Action("GetStatesByCountry", "Dashboard")',
-                        type: 'GET',
+                        type: "GET",
                         data: { countryId: countryId },
-                        success: function (data) {
-                            $.each(data, function (index, item) {
-                                $('#state').append($('<option>', {
-                                    value: item.stateId,
-                                    text: item.name
-                                }));
+                        success: function (states) {
+                            $("#state").empty().append('<option value="">Select State</option>');
+                            $("#city").empty().append('<option value="">Select City</option>');
+                            $.each(states, function (index, state) {
+                                $("#state").append('<option value="' + state.stateId + '">' + state.name + '</option>');
                             });
+                        },
+                        error: function () {
+                            console("Error loading states");
                         }
                     });
                 }
             });
-
-            // Load Cities when a State is selected
-            $('#state').change(function () {
+            @* Cities *@
+            $("#state").change(function () {
                 var stateId = $(this).val();
-                $('#city').empty().append('<option value="" selected>Select City</option>');
+                console.log("State ID Selected:", stateId); // Debugging Log
 
                 if (stateId) {
                     $.ajax({
                         url: '@Url.Action("GetCitiesByState", "Dashboard")',
-                        type: 'GET',
+                        type: "GET",
                         data: { id: stateId },
-                        success: function (data) {
-                            $.each(data, function (index, item) {
-                                $('#city').append($('<option>', {
-                                    value: item.cityId,
-                                    text: item.name
-                                }));
-                            });
+                        success: function (cities) {
+                            console.log("Cities Received:", cities); // Debugging Log
+                            $("#city").empty().append('<option value="">Select City</option>');
+
+                            if (cities.length > 0) {
+                                $.each(cities, function (index, city) {
+                                    $("#city").append('<option value="' + city.cityId + '">' + city.name + '</option>');
+                                });
+
+                                // Automatically select the first city
+                                $("#city").val(cities[0].id).trigger("change");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error loading cities:", error); // Debugging Log
+                            alert("Error loading cities");
                         }
                     });
                 }
             });
-        });
+
+
+            /*
+                <------ Client Side Validation For the form submission
+            */
+            $('#editUserForm').submit(function (event) {
+                event.preventDefault();
+                let isValid = true;
+
+
+                //Required Field Validation (Except Image)
+                $("#editUserForm input[type='text'], #editUserForm select").each(function () {
+                    let inputValue = $(this).val().trim();
+                    @* console.log(inputValue); *@
+
+                    if (!inputValue || inputValue === "0") {
+                        $(this).addClass("is-invalid"); // Add error styling
+                        $(this).next(".invalid-feedback").remove(); // Remove old message
+                        $(this).after('<div class="invalid-feedback">This field is required</div>');
+                        isValid = false;
+                    } else {
+                        $(this).removeClass("is-invalid");
+                        $(this).next(".invalid-feedback").remove();
+                    }
+                })
+
+
+                // Zipcode Validation (Must Not Be Empty or 0)
+                let zipcode = $("#zipcode").val().trim();
+                if (zipcode === "" || zipcode === "0") {
+                    $("#zipcode").addClass("is-invalid");
+                    $("#zipcode").next(".invalid-feedback").remove();
+                    $("#zipcode").after('<div class="invalid-feedback">Zipcode is required</div>');
+                    isValid = false;
+                } else {
+                    $("#zipcode").removeClass("is-invalid");
+                    $("#zipcode").next(".invalid-feedback").remove();
+                }
+
+
+                if (isValid) {
+                    $("#editUserForm").off("submit").submit();
+                }
+            });
+            // Remove error styling when user types
+            $("#editUserForm input, #editUserForm select").on("input change", function () {
+                $(this).removeClass("is-invalid");
+                $(this).next(".invalid-feedback").remove();
+            });
+      });
     </script>
 }

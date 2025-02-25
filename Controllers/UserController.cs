@@ -1,5 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -16,13 +17,15 @@ namespace PizzashopMVCProject.Controllers
         private readonly PizzashopDbContext _context;
         private readonly JwtService _JwtService;
         private readonly EncryptionService _encrypt;
+        private readonly IEmailSender _emailSender;
 
 
-        public UserController(PizzashopDbContext context, JwtService JwtService, EncryptionService encrypt)
+        public UserController(PizzashopDbContext context, JwtService JwtService, EncryptionService encrypt, IEmailSender emailSender)
         {
             _context = context;
             _JwtService = JwtService;
             _encrypt = encrypt;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -97,6 +100,7 @@ namespace PizzashopMVCProject.Controllers
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> AddUser(AddUserViewModel model)
         {
             var token = Request.Cookies["SuperSecretAuthToken"];
@@ -146,10 +150,31 @@ namespace PizzashopMVCProject.Controllers
                 // Add user to the Databse
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "User Added successfully!";
+
+
+                // Generate password reset link (optional)
+                // var emailToken = Guid.NewGuid().ToString();
+                // string resetLink = Url.Action("ResetPassword", "Home", new { email = newUser.Email, emailToken }, Request.Scheme);
+                // <p>Click <a href='{resetLink}'>here</a> to set your new password.</p>
+
+
+
+                // Prepare Email Content
+                string subject = "Welcome to Pizza Shop!";
+                string body = $@"
+                    <h2>Welcome, {newUser.Firstname}!</h2>
+                    <p>Your account has been created successfully.</p>
+                    <p>Temporary Password: <strong>{model.Password}</strong></p>
+                    <br>
+                    <p>Best regards,<br>Pizza Shop Team</p>";
+
+                // Send Email
+                await _emailSender.SendEmailAsync(newUser.Email, subject, body);
+
+                TempData["SuccessMessage"] = "User Added successfully! Email Sent";
                 return RedirectToAction("AddUser", "User");
             }
-            TempData["SuccessMessage"] = "Error Adding User!";
+            TempData["ErrorMessage"] = "Error Adding User!";
             return View(model);
         }
 
@@ -167,6 +192,7 @@ namespace PizzashopMVCProject.Controllers
 
             EditUserViewModel model = new EditUserViewModel();
             if(user != null){
+                model.UserId = user.Id;
                 model.FirstName = user.Firstname;
                 model.LastName = user.Lastname;
                 model.UserName = user.Username;
@@ -179,14 +205,92 @@ namespace PizzashopMVCProject.Controllers
                 model.Phone = user.Phone;
                 model.Address = user.Address;
                 model.Zipcode = user.Zipcode;
-                model.Country = _context.Countries.Where(u=>u.CountryId == user.Countryid).FirstOrDefault().Name;
-                model.State = _context.States.Where(u=>u.StateId == user.Stateid).FirstOrDefault().Name;
-                model.City = _context.Cities.Where(u=>u.CityId == user.Cityid).FirstOrDefault().Name;
+                model.Roles = _context.Roles.ToList();
+                model.Countries = _context.Countries.ToList();
+                model.States = _context.States.Where(s => s.Countryid == user.Countryid).ToList();
+                model.Cities = _context.Cities.Where(c => c.Stateid == user.Stateid).ToList();
             }
 
             ViewData["UserName"] = userName;
             ViewData["ImgUrl"] = imgUrl;
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model) {
+
+            if(ModelState.IsValid){
+            
+                var user = await _context.Users.FindAsync(model.UserId);
+                if(user != null){
+                    user.Firstname = model.FirstName;
+                    user.Lastname = model.LastName;
+                    user.Username = model.UserName;
+                    user.Email = model.Email;
+                    user.Roleid = model.RoleId;
+                    user.Status = model.Status;
+                    user.Countryid = model.CountryId;
+                    user.Stateid = model.StateId;
+                    user.Cityid = model.CityId;
+                    user.Phone = model.Phone;
+                    user.Address = model.Address;
+                    user.Zipcode = model.Zipcode;
+                    user.UpdatedBy = model.UserId; // Update the user who updated the record
+                    user.UpdatedAt = DateTime.Now; // Update the date when the record was updated
+
+
+                    // Handle Image Upload
+                if (model.ProfileImage != null)
+                {
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    string fileName = $"{Guid.NewGuid()}_{model.ProfileImage.FileName}";
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.ProfileImage.CopyToAsync(fileStream);
+                    }
+
+                    user.Imgurl = $"/uploads/{fileName}"; // Store relative path in DB
+                }
+                    _context.Users.Update(user);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "User updated successfully!";
+                    return RedirectToAction("Index", "User");
+                }
+                else{
+                    TempData["ErrorMessage"] = "User not found!";
+                    return RedirectToAction("Index", "User");
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SoftDeleteUser(long id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                user.Status = false;
+                user.Isdeleted = true;
+                user.UpdatedBy = user.Id;
+                user.UpdatedAt = DateTime.Now;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                
+                return Json(new { success = true, message = "User deleted successfully!" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "User not found!" });
+            }
         }
     }
 }
