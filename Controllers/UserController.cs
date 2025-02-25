@@ -275,12 +275,19 @@ namespace PizzashopMVCProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SoftDeleteUser(long id)
         {
+
+             var token = Request.Cookies["SuperSecretAuthToken"];
+            var email = _JwtService.GetClaimValue(token, "email");
+
+            var admin = _context.Users.Where(u => u.Email == email).Select(u => new {u.Id}).FirstOrDefault();
+
+
             var user = await _context.Users.FindAsync(id);
             if (user != null)
             {
                 user.Status = false;
                 user.Isdeleted = true;
-                user.UpdatedBy = user.Id;
+                user.UpdatedBy = admin.Id;
                 user.UpdatedAt = DateTime.Now;
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
